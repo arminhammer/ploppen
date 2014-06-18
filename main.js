@@ -30,7 +30,23 @@ function Peer(name) {
 	};
 }
 
+var peers = {};
+
 var peer = Peer("Person1");
+
+if(peers[peer.getName()] == null) {
+	console.log("Totally empty!");
+} else {
+	console.log("Peer is there, it is " + peer.getName());
+}
+
+peers[peer.getName()] = peer;
+
+if(peers[peer.getName()] == null) {
+	console.log("Totally empty!");
+} else {
+	console.log("Peer is there, it is " + peer.getName());
+}
 
 console.log("Here is " + peer.getName());
 peer.setName("Person2");
