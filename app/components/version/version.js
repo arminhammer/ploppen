@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('myApp.version', [
-  'myApp.version.interpolate-filter',
-  'myApp.version.version-directive'
+angular.module('node-teiler.version', [
+  'node-teiler.version.interpolate-filter',
+  'node-teiler.version.version-directive'
 ])
 
 .value('version', '0.1');

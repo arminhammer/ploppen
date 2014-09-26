@@ -1,12 +1,13 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('myApp', [
+angular.module('node-teiler', [
   'ngRoute',
-  'myApp.view1',
-  'myApp.view2',
-  'myApp.version'
+  'node-teiler.list',
+  'node-teiler.view1',
+  'node-teiler.view2',
+  'node-teiler.version'
 ]).
 config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/view1'});
+  $routeProvider.otherwise({redirectTo: '/list'});
 }]);
