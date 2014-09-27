@@ -39,7 +39,7 @@
     <div ng-controller="ListController">
         <div class="card">
             <form>
-                <input type="text" value="{{ myName }}">
+                <input type="text" ng-model="myPeer.name" ng-model-options="{ updateOn: 'blur' }" placeholder="My Computer">
             </form>
         </div>
         <div ng-view></div>
@@ -51,9 +51,8 @@
                         <ul class="table-view">
                             <li class="table-view-cell"><strong>Files</strong></li>
                             <li ng-repeat="file in peer.files" class="table-view-cell">
-                                    <span class="media-object pull-left icon icon-pages"></span>
-                                    {{ file.name }}
-                                    <button class="btn btn-positive">Download</button>
+                                {{ file.name }}
+                                <button class="btn btn-positive">Download</button>
                             </li>
                         </ul>
                     </div>

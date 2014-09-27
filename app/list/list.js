@@ -10,9 +10,9 @@ angular.module('node-teiler.list', ['ngRoute'])
         });
     }])
     */
-    .controller('ListController', function($scope, PeerList) {
+    .controller('ListController', function($scope, PeerList, MyPeer) {
 
-        $scope.myName = "My Computer";
+        $scope.myPeer = MyPeer.myPeer();
 
         $scope.peers = PeerList.peersList();
 
@@ -23,20 +23,20 @@ angular.module('node-teiler.list', ['ngRoute'])
             name: "Peer 1",
             files: [
                 { name: "File 1" },
-                { name: "File 2"}
+                { name: "File 2" }
             ]
         });
         peers.push({
             name: "Peer 2",
             files: [
                 { name: "File 3" },
-                { name: "File 4"}
+                { name: "File 4" }
             ]
         });
 
         this.peersList = function() {
             return peers;
-        }
+        };
         /*
         return function(peer) {
             if(peer != null) {
@@ -44,4 +44,16 @@ angular.module('node-teiler.list', ['ngRoute'])
             }
         };
         */
+    }])
+    .service('MyPeer', [function() {
+
+        var myPeer = {
+            name: "",
+            ipAddress: ""
+        };
+
+        this.myPeer = function() {
+            return myPeer;
+        };
+
     }]);
