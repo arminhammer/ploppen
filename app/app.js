@@ -53,14 +53,9 @@ angular.module('node-teiler', [
 
         this.contains = function(peer) {
 
-            if(peers.hasOwnProperty(peer.name)) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            return peers.hasOwnProperty(peer.name);
 
-        }
+        };
 
         this.addPeer = function(peer) {
 
