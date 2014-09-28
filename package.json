@@ -2,7 +2,6 @@
   "name": "angular-seed",
   "main" : "app/index.html",
   "single-instance" : true,
-  //"chromium-args" : "--disable-accelerated-video --allow-no-sandbox-job --disable-gpu-sandbox",
   "private": true,
   "version": "0.0.0",
   "description": "A starter project for AngularJS",

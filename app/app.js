@@ -6,16 +6,48 @@ angular.module('node-teiler', [
     'node-teiler.list'
 
 ])
-    .service('MyPeer', [function() {
+    .service('Peer', [function() {
 
         var myPeer = {
             name: "localhost",
-            ipAddress: ""
+            ipAddress: "127.0.0.1"
         };
 
         this.myPeer = function() {
 
             return myPeer;
+
+        };
+
+    }])
+    .service('PeerList', [function() {
+
+        var peers = {};
+
+        peers["Peer 1"] = {
+            name : "Peer 1",
+            files : [
+                { name : "File 1" },
+                { name : "File 2" }
+            ]
+        };
+
+        peers["Peer 2"] = {
+            name : "Peer 2",
+            files : [
+                { name : "File 3" },
+                { name : "File 4" }
+            ]
+        };
+
+        peers["Peer 3"] = {
+            name : "Peer 3",
+            files : []
+        };
+
+        this.peersList = function() {
+
+            return peers;
 
         };
 
@@ -34,7 +66,7 @@ angular.module('node-teiler', [
         }
 
     }])
-    .service('PeerDiscoveryListener', ['MyPeer', 'PeerDiscoveryConfig', function(MyPeer, PeerDiscoveryConfig) {
+    .service('PeerDiscoveryListener', ['Peer', 'PeerDiscoveryConfig', function(Peer, PeerDiscoveryConfig) {
 
         var dgram = require('dgram');
         var server;
@@ -43,12 +75,23 @@ angular.module('node-teiler', [
 
             server = dgram.createSocket('udp4');
 
-            server.bind(1234, function() {
+            server.bind(PeerDiscoveryConfig.port(), function() {
 
                 server.addMembership(PeerDiscoveryConfig.address());
                 server.setBroadcast(true);
                 server.setMulticastTTL(5);
                 server.setMulticastLoopback(false);
+
+            });
+
+            server.on('listening', function () {
+                var address = server.address();
+                console.log('Peer Discovery Listener listening on ' + address.address + ":" + address.port);
+            });
+
+            server.on('message', function (message, remote) {
+                console.log(remote.address + ':' + remote.port +' - ' + message);
+                //var peerMessage = JSON.parse(message);
 
             });
 
@@ -66,10 +109,10 @@ angular.module('node-teiler', [
         };
 
     }])
-    .service('PeerDiscoveryBroadcaster', ['MyPeer', 'PeerDiscoveryConfig', function(MyPeer, PeerDiscoveryConfig) {
+    .service('PeerDiscoveryBroadcaster', ['Peer', 'PeerDiscoveryConfig', function(Peer, PeerDiscoveryConfig) {
 
         var dgram = require('dgram');
-        var message = new Buffer("Host: " + MyPeer.myPeer().name);
+        var message = new Buffer("Host: " + JSON.stringify(Peer.myPeer()));
 
         function broadCastMessage() {
 
