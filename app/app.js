@@ -84,7 +84,7 @@ angular.module('node-teiler', [
         }
 
     }])
-    .service('PeerDiscoveryListener', ['Peer', 'PeerDiscoveryConfig', 'PeerList', function(Peer, PeerDiscoveryConfig, PeerList) {
+    .service('PeerDiscoveryListener', ['$rootScope', 'Peer', 'PeerDiscoveryConfig', 'PeerList', function($rootScope, Peer, PeerDiscoveryConfig, PeerList) {
 
         var dgram = require('dgram');
         var server;
@@ -113,9 +113,8 @@ angular.module('node-teiler', [
 
                 console.log(remote.address + ':' + remote.port +' - ' + messageJSON);
                 var message = JSON.parse(messageJSON);
-                //console.log("Adding peer...");
                 PeerList.addPeer(message.peer);
-                //console.log("Added peer...");
+                $rootScope.$broadcast('update peers');
 
             });
 

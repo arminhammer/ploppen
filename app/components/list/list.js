@@ -8,11 +8,9 @@ angular.module('node-teiler.list', [])
 
         $scope.peers = PeerList.list();
 
-        /*
-        $scope.$watch(PeerList.addPeer(), function() {
-            $scope.peers = PeerList.list();
+        $scope.$on('update peers', function() {
+            $scope.$apply();
         });
-        */
 
         PeerDiscoveryListener.start(function() {
 

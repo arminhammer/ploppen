@@ -15,6 +15,14 @@
     "shelljs": "^0.2.6",
     "karma-junit-reporter": "^0.2.2"
   },
+  "window": {
+    "title": "node-webkit demo",
+    "icon": "link.png",
+    "toolbar": true,
+    "frame": true,
+    "width": 500,
+    "height": 1000
+  },
   "scripts": {
     "postinstall": "bower install",
 
