@@ -2,16 +2,19 @@
 
 angular.module('node-teiler.list', [])
 
-    .controller('ListController', function($scope, PeerList, MyPeer, PeerDiscoveryBroadCast) {
+    .controller('ListController', function($scope, PeerList, MyPeer, PeerDiscoveryBroadcaster, PeerDiscoveryListener) {
 
         $scope.myPeer = MyPeer.myPeer();
 
         $scope.peers = PeerList.peersList();
 
-        PeerDiscoveryBroadCast.start(function() {
-            console.log("Started Peer Discovery Broadcast");
+        PeerDiscoveryListener.start(function() {
+            console.log("Started Peer Discovery Listener");
         });
 
+        PeerDiscoveryBroadcaster.start(function() {
+            console.log("Started Peer Discovery Broadcaster");
+        });
     })
     .service('PeerList', [function() {
 

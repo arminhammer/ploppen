@@ -17,10 +17,20 @@ angular.module('node-teiler', [
         };
 
     }])
-    .service('PeerDiscoveryBroadCast', ['MyPeer', function(MyPeer) {
+    .service('PeerDiscoveryConfig', [function() {
 
-        var multicastAddress = '224.0.0.114';
-        var multicastPort = 8088;
+        var address = '224.0.0.114';
+        var port = 8088;
+
+        this.address = function() {
+            return address;
+        };
+
+        this.port = function() {
+            return port;
+        }
+    }])
+    .service('PeerDiscoveryListener', ['MyPeer', 'PeerDiscoveryConfig', function(MyPeer, PeerDiscoveryConfig) {
 
         var dgram = require('dgram');
         var server;
@@ -30,31 +40,51 @@ angular.module('node-teiler', [
             server = dgram.createSocket('udp4');
 
             server.bind(1234, function() {
-                server.addMembership(multicastAddress);
+                server.addMembership(PeerDiscoveryConfig.address());
                 server.setBroadcast(true);
                 server.setMulticastTTL(5);
                 server.setMulticastLoopback(false);
             });
 
-            setInterval(broadcastNew, 3000);
-
             callback();
+
         };
 
         this.stop = function(callback) {
 
-            server.dropMembership(multicastAddress);
+            server.dropMembership(PeerDiscoveryConfig.address());
             server.close();
 
             callback();
+
         };
 
-        function broadcastNew() {
+    }])
+    .service('PeerDiscoveryBroadcaster', ['MyPeer', 'PeerDiscoveryConfig', function(MyPeer, PeerDiscoveryConfig) {
 
-            var message = new Buffer("Host: " + MyPeer.myPeer().name);
-            server.send(message, 0, message.length, multicastPort, multicastAddress);
+        var dgram = require('dgram');
+        var message = new Buffer("Host: " + MyPeer.myPeer().name);
 
-            console.log("Sent " + message + " to the wire...");
+
+        function broadCastMessage() {
+
+            var client = dgram.createSocket('udp4');
+
+            client.send(message, 0, message.length, PeerDiscoveryConfig.port(), PeerDiscoveryConfig.address(), function(err, bytes) {
+
+                if (err) throw err;
+                console.log("UDP message: " + message + " sent to " + PeerDiscoveryConfig.address() +":"+ PeerDiscoveryConfig.port());
+                client.close();
+
+            })
+
+        }
+
+        this.start = function(callback) {
+            setInterval(broadCastMessage, 3000);
+
+            callback();
+
         }
 
     }]);
