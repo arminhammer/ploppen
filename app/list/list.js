@@ -8,7 +8,9 @@ angular.module('node-teiler.list', [])
 
         $scope.peers = PeerList.peersList();
 
-        PeerDiscoveryBroadCast.start();
+        PeerDiscoveryBroadCast.start(function() {
+            console.log("Started Peer Discovery Broadcast");
+        });
 
     })
     .service('PeerList', [function() {

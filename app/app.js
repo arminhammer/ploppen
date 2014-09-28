@@ -25,7 +25,7 @@ angular.module('node-teiler', [
         var dgram = require('dgram');
         var server;
 
-        this.start = function() {
+        this.start = function(callback) {
 
             server = dgram.createSocket('udp4');
 
@@ -37,21 +37,24 @@ angular.module('node-teiler', [
             });
 
             setInterval(broadcastNew, 3000);
+
+            callback();
         };
 
-        this.stop = function() {
+        this.stop = function(callback) {
 
             server.dropMembership(multicastAddress);
             server.close();
 
+            callback();
         };
 
         function broadcastNew() {
 
             var message = new Buffer("Host: " + MyPeer.myPeer().name);
             server.send(message, 0, message.length, multicastPort, multicastAddress);
-            console.log("Sent " + message + " to the wire...");
 
+            console.log("Sent " + message + " to the wire...");
         }
 
     }]);
