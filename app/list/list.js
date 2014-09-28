@@ -33,17 +33,14 @@ angular.module('node-teiler.list', ['ngRoute'])
                 { name: "File 4" }
             ]
         });
+        peers.push({
+            name: "Peer 3",
+            files: []
+        });
 
         this.peersList = function() {
             return peers;
         };
-        /*
-        return function(peer) {
-            if(peer != null) {
-                peerList[peer.name] = peer;
-            }
-        };
-        */
     }])
     .service('MyPeer', [function() {
 
