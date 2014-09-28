@@ -2,8 +2,9 @@
 
 // Declare app level module which depends on views, and components
 angular.module('node-teiler', [
-    //'ngRoute',
+
     'node-teiler.list'
+
 ])
     .service('MyPeer', [function() {
 
@@ -13,7 +14,9 @@ angular.module('node-teiler', [
         };
 
         this.myPeer = function() {
+
             return myPeer;
+
         };
 
     }])
@@ -29,6 +32,7 @@ angular.module('node-teiler', [
         this.port = function() {
             return port;
         }
+
     }])
     .service('PeerDiscoveryListener', ['MyPeer', 'PeerDiscoveryConfig', function(MyPeer, PeerDiscoveryConfig) {
 
@@ -40,10 +44,12 @@ angular.module('node-teiler', [
             server = dgram.createSocket('udp4');
 
             server.bind(1234, function() {
+
                 server.addMembership(PeerDiscoveryConfig.address());
                 server.setBroadcast(true);
                 server.setMulticastTTL(5);
                 server.setMulticastLoopback(false);
+
             });
 
             callback();
@@ -65,7 +71,6 @@ angular.module('node-teiler', [
         var dgram = require('dgram');
         var message = new Buffer("Host: " + MyPeer.myPeer().name);
 
-
         function broadCastMessage() {
 
             var client = dgram.createSocket('udp4');
@@ -81,6 +86,7 @@ angular.module('node-teiler', [
         }
 
         this.start = function(callback) {
+
             setInterval(broadCastMessage, 3000);
 
             callback();

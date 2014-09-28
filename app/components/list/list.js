@@ -9,11 +9,15 @@ angular.module('node-teiler.list', [])
         $scope.peers = PeerList.peersList();
 
         PeerDiscoveryListener.start(function() {
+
             console.log("Started Peer Discovery Listener");
+
         });
 
         PeerDiscoveryBroadcaster.start(function() {
+
             console.log("Started Peer Discovery Broadcaster");
+
         });
     })
     .service('PeerList', [function() {
@@ -40,7 +44,9 @@ angular.module('node-teiler.list', [])
         });
 
         this.peersList = function() {
+
             return peers;
+
         };
 
     }]);
