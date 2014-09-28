@@ -1,15 +1,7 @@
 'use strict';
 
-angular.module('node-teiler.list', ['ngRoute'])
+angular.module('node-teiler.list', [])
 
-    /*
-    .config(['$routeProvider', function($routeProvider) {
-        $routeProvider.when('/list', {
-            templateUrl: 'list/list.html',
-            controller: 'ListCtrl'
-        });
-    }])
-    */
     .controller('ListController', function($scope, PeerList, MyPeer) {
 
         $scope.myPeer = MyPeer.myPeer();
@@ -18,7 +10,9 @@ angular.module('node-teiler.list', ['ngRoute'])
 
     })
     .service('PeerList', [function() {
+
         var peers = [];
+
         peers.push({
             name: "Peer 1",
             files: [
@@ -40,17 +34,6 @@ angular.module('node-teiler.list', ['ngRoute'])
 
         this.peersList = function() {
             return peers;
-        };
-    }])
-    .service('MyPeer', [function() {
-
-        var myPeer = {
-            name: "",
-            ipAddress: ""
-        };
-
-        this.myPeer = function() {
-            return myPeer;
         };
 
     }]);
