@@ -2,11 +2,13 @@
 
 angular.module('node-teiler.list', [])
 
-    .controller('ListController', function($scope, PeerList, MyPeer) {
+    .controller('ListController', function($scope, PeerList, MyPeer, PeerDiscoveryBroadCast) {
 
         $scope.myPeer = MyPeer.myPeer();
 
         $scope.peers = PeerList.peersList();
+
+        PeerDiscoveryBroadCast.start();
 
     })
     .service('PeerList', [function() {
