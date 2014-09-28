@@ -45,11 +45,34 @@ angular.module('node-teiler', [
             files : []
         };
 
-        this.peersList = function() {
+        this.list = function() {
 
             return peers;
 
         };
+
+        this.contains = function(peer) {
+
+            if(peers.hasOwnProperty(peer.name)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        }
+
+        this.addPeer = function(peer) {
+
+            if(!this.contains(peer)) {
+                peers[peer.name] = peer;
+                console.log(peers[peer.name].name + " added to peers");
+            }
+            else{
+                console.log(peer.name + " is already in the list!");
+            }
+
+        }
 
     }])
     .service('PeerDiscoveryConfig', [function() {
@@ -66,7 +89,7 @@ angular.module('node-teiler', [
         }
 
     }])
-    .service('PeerDiscoveryListener', ['Peer', 'PeerDiscoveryConfig', function(Peer, PeerDiscoveryConfig) {
+    .service('PeerDiscoveryListener', ['Peer', 'PeerDiscoveryConfig', 'PeerList', function(Peer, PeerDiscoveryConfig, PeerList) {
 
         var dgram = require('dgram');
         var server;
@@ -85,13 +108,19 @@ angular.module('node-teiler', [
             });
 
             server.on('listening', function () {
+
                 var address = server.address();
                 console.log('Peer Discovery Listener listening on ' + address.address + ":" + address.port);
+
             });
 
-            server.on('message', function (message, remote) {
-                console.log(remote.address + ':' + remote.port +' - ' + message);
-                //var peerMessage = JSON.parse(message);
+            server.on('message', function (messageJSON, remote) {
+
+                console.log(remote.address + ':' + remote.port +' - ' + messageJSON);
+                var message = JSON.parse(messageJSON);
+                //console.log("Adding peer...");
+                PeerList.addPeer(message.peer);
+                //console.log("Added peer...");
 
             });
 
@@ -112,16 +141,21 @@ angular.module('node-teiler', [
     .service('PeerDiscoveryBroadcaster', ['Peer', 'PeerDiscoveryConfig', function(Peer, PeerDiscoveryConfig) {
 
         var dgram = require('dgram');
-        var message = new Buffer("Host: " + JSON.stringify(Peer.myPeer()));
+        var message = {
+            timestamp: Date.now(),
+            peer: Peer.myPeer()
+        }
+
+        var messageJSON = new Buffer(JSON.stringify(message));
 
         function broadCastMessage() {
 
             var client = dgram.createSocket('udp4');
 
-            client.send(message, 0, message.length, PeerDiscoveryConfig.port(), PeerDiscoveryConfig.address(), function(err, bytes) {
+            client.send(messageJSON, 0, messageJSON.length, PeerDiscoveryConfig.port(), PeerDiscoveryConfig.address(), function(err, bytes) {
 
                 if (err) throw err;
-                console.log("UDP message: " + message + " sent to " + PeerDiscoveryConfig.address() +":"+ PeerDiscoveryConfig.port());
+                console.log("UDP message: " + messageJSON + " sent to " + PeerDiscoveryConfig.address() +":"+ PeerDiscoveryConfig.port());
                 client.close();
 
             })

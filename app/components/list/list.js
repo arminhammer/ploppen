@@ -6,7 +6,7 @@ angular.module('node-teiler.list', [])
 
         $scope.myPeer = Peer.myPeer();
 
-        $scope.peers = PeerList.peersList();
+        $scope.peers = PeerList.list();
 
         PeerDiscoveryListener.start(function() {
 
