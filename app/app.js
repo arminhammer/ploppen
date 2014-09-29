@@ -8,11 +8,12 @@ angular.module('node-teiler', [
     'node-teiler.filetransfer'
 
 ])
-    .service('Peer', [function() {
+    .service('Peer', ['Config', function(Config) {
 
         var myPeer = {
             name: "localhost",
-            ipAddress: "127.0.0.1"
+            address: "0.0.0.0",
+            port: Config.fileTransferPort()
         };
 
         this.myPeer = function() {
@@ -28,6 +29,8 @@ angular.module('node-teiler', [
 
         peers["Peer 1"] = {
             name : "Peer 1",
+            address: "localhost",
+            port: 9999,
             files : [
                 { name : "File 1" },
                 { name : "File 2" }
@@ -36,6 +39,8 @@ angular.module('node-teiler', [
 
         peers["Peer 2"] = {
             name : "Peer 2",
+            address: "localhost",
+            port: 9999,
             files : [
                 { name : "File 3" },
                 { name : "File 4" }
@@ -44,6 +49,8 @@ angular.module('node-teiler', [
 
         peers["Peer 3"] = {
             name : "Peer 3",
+            address: "localhost",
+            port: 9999,
             files : []
         };
 
@@ -53,13 +60,60 @@ angular.module('node-teiler', [
 
         };
 
+        this.count = function() {
+
+            var count = 0;
+
+            for (var key in peers) {
+
+                if (peers.hasOwnProperty(key)) {
+
+                    count++;
+
+                }
+            }
+
+            return count;
+
+        };
+
+        this.keys = function() {
+
+            var keys = [];
+
+            for (var key in peers) {
+
+                if (peers.hasOwnProperty(key)) {
+
+                    keys.push(key);
+
+                }
+            }
+
+            return keys;
+
+        };
+
+        this.print = function() {
+
+            for (var key in peers) {
+
+                if (peers.hasOwnProperty(key)) {
+
+                    console.log(JSON.stringify(peers[key]));
+
+                }
+            }
+
+        };
+
         this.contains = function(peer) {
 
             return peers.hasOwnProperty(peer.name);
 
         };
 
-        this.addPeer = function(peer) {
+        this.addPeer = function(peer, callback) {
 
             if(!this.contains(peer)) {
                 peers[peer.name] = peer;
@@ -68,6 +122,8 @@ angular.module('node-teiler', [
             else{
                 console.log(peer.name + " is already in the list!");
             }
+
+            callback();
 
         }
 

@@ -5,7 +5,7 @@
 
 // Declare app level module which depends on views, and components
 angular.module('node-teiler.peerdiscovery', [])
-    .service('PeerDiscoveryListener', ['$rootScope', 'Peer', 'Config', 'PeerList', function($rootScope, Peer, Config, PeerList) {
+    .service('PeerDiscoveryListener', ['$rootScope', 'Peer', 'Config', 'PeerList', 'FileTransferClient', function($rootScope, Peer, Config, PeerList, FileTransferClient) {
 
         var dgram = require('dgram');
         var server;
@@ -34,7 +34,17 @@ angular.module('node-teiler.peerdiscovery', [])
 
                 console.log(remote.multicastAddress + ':' + remote.multicastPort +' - ' + messageJSON);
                 var message = JSON.parse(messageJSON);
-                PeerList.addPeer(message.peer);
+                var peer = message.peer;
+                peer.address = remote.address;
+
+                PeerList.addPeer(peer, function() {
+
+                    FileTransferClient.connect(peer, function() {
+                        console.log("Connected successfully to " + peer.name);
+                    });
+
+                });
+
                 $rootScope.$broadcast('update peers');
 
             });
@@ -59,7 +69,7 @@ angular.module('node-teiler.peerdiscovery', [])
         var message = {
             timestamp: Date.now(),
             peer: Peer.myPeer()
-        }
+        };
 
         var messageJSON = new Buffer(JSON.stringify(message));
 

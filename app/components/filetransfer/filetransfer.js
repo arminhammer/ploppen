@@ -16,8 +16,8 @@ angular.module('node-teiler.filetransfer', [])
 
                 io.emit('this', { will: 'be received by everyone'});
 
-                socket.on('private message', function (from, msg) {
-                    console.log('I received a private message by ', from, ' saying ', msg);
+                socket.on('private message', function (message) {
+                    console.log('I received a private message by ', message.peer, ' saying ', message.message);
                 });
 
                 socket.on('disconnect', function () {
@@ -31,17 +31,36 @@ angular.module('node-teiler.filetransfer', [])
         };
 
     }])
-    .service('FileTransferClient', ['Config', function(Config) {
+    .service('FileTransferClient', ['Config', 'PeerList', function(Config, PeerList) {
 
-        this.start = function(callback) {
+        this.connect = function(peer, callback) {
 
-            setInterval(broadCastMessage, 3000);
+            var ioc = require('socket.io-client');
+
+            var socket = ioc.connect('http://' + peer.address + ':' + peer.port);
+
+            socket.emit('private message', { peer: peer.name, message: "Hi World!"});
+
+            socket.on('news', function (data) {
+
+                console.log(data);
+                socket.emit('my other event', { my: 'data' });
+
+            });
+
+            PeerList.print();
+
+            peer.socket = socket;
+
+            console.log("peer.socket: " + peer.socket);
+
+            PeerList.print();
 
             callback();
 
         };
 
-        this.stop = function(callback) {
+        this.disconnect = function(peer, callback) {
 
             callback();
 
