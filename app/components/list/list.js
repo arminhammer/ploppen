@@ -12,6 +12,16 @@ angular.module('node-teiler.list', [])
             $scope.$apply();
         });
 
+        $scope.clickSendButton = function(clickEvent) {
+            console.log("Clicked Send Button!");
+            console.log(clickEvent);
+        };
+
+        $scope.clickDownloadButton = function(clickEvent) {
+            console.log("Clicked Download Button!");
+            console.log(clickEvent);
+        };
+
         PeerDiscoveryListener.start(function() {
 
             console.log("Started Peer Discovery Listener");
