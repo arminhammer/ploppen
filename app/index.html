@@ -43,18 +43,16 @@
             </form>
         </div>
         <div ng-view></div>
-        <div class="card">
+        <div class="card" ng-repeat="peer in peers">
             <ul class="table-view">
-                <span ng-repeat="peer in peers">
-                    <li class="table-view-cell">
-                        <strong>{{ peer.name }}</strong>
-                        <button class="btn btn-negative" ng-click="clickSendButton($event)" >Send a File</button>
-                    </li>
-                    <li ng-repeat="file in peer.files" class="table-view-cell">
-                        {{ file.name }}
-                        <button class="btn btn-positive" ng-click="clickDownloadButton($event, file)" >Download File</button>
-                    </li>
-                </span>
+                <li class="table-view-cell">
+                    <strong>{{ peer.name }}</strong>
+                    <button class="btn btn-negative" ng-click="clickSendButton($event)" >Send a File</button>
+                </li>
+                <li ng-repeat="file in peer.files" class="table-view-cell">
+                    {{ file.name }}
+                    <button class="btn btn-positive" ng-click="clickDownloadButton($event, file)" >Download File</button>
+                </li>
             </ul>
         </div>
     </div>
