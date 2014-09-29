@@ -17,8 +17,8 @@ angular.module('node-teiler.list', [])
             console.log(clickEvent);
         };
 
-        $scope.clickDownloadButton = function(clickEvent) {
-            console.log("Clicked Download Button!");
+        $scope.clickDownloadButton = function(clickEvent, file) {
+            console.log("Clicked Download Button for " + file.name);
             console.log(clickEvent);
         };
 
