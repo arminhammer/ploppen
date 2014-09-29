@@ -4,7 +4,8 @@
 angular.module('node-teiler', [
 
     'node-teiler.list',
-    'node-teiler.peerdiscovery'
+    'node-teiler.peerdiscovery',
+    'node-teiler.filetransfer'
 
 ])
     .service('Peer', [function() {

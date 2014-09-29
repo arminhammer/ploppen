@@ -2,7 +2,7 @@
 
 angular.module('node-teiler.list', [])
 
-    .controller('ListController', function($scope, PeerList, Peer, PeerDiscoveryBroadcaster, PeerDiscoveryListener) {
+    .controller('ListController', ['$scope', 'PeerList', 'Peer', 'PeerDiscoveryBroadcaster', 'PeerDiscoveryListener', 'FileTransferServer', function($scope, PeerList, Peer, PeerDiscoveryBroadcaster, PeerDiscoveryListener, FileTransferServer) {
 
         $scope.myPeer = Peer.myPeer();
 
@@ -33,4 +33,11 @@ angular.module('node-teiler.list', [])
             console.log("Started Peer Discovery Broadcaster");
 
         });
-    });
+
+        FileTransferServer.start(function() {
+
+            console.log("Started File Transfer Server");
+
+        });
+
+    }]);
