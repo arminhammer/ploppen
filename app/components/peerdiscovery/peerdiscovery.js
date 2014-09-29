@@ -5,7 +5,7 @@
 
 // Declare app level module which depends on views, and components
 angular.module('node-teiler.peerdiscovery', [])
-    .service('PeerDiscoveryListener', ['$rootScope', 'Peer', 'PeerDiscoveryConfig', 'PeerList', function($rootScope, Peer, PeerDiscoveryConfig, PeerList) {
+    .service('PeerDiscoveryListener', ['$rootScope', 'Peer', 'Config', 'PeerList', function($rootScope, Peer, Config, PeerList) {
 
         var dgram = require('dgram');
         var server;
@@ -14,9 +14,9 @@ angular.module('node-teiler.peerdiscovery', [])
 
             server = dgram.createSocket('udp4');
 
-            server.bind(PeerDiscoveryConfig.port(), function() {
+            server.bind(Config.multicastPort(), function() {
 
-                server.addMembership(PeerDiscoveryConfig.address());
+                server.addMembership(Config.multicastAddress());
                 server.setBroadcast(true);
                 server.setMulticastTTL(5);
                 server.setMulticastLoopback(false);
@@ -32,7 +32,7 @@ angular.module('node-teiler.peerdiscovery', [])
 
             server.on('message', function (messageJSON, remote) {
 
-                console.log(remote.address + ':' + remote.port +' - ' + messageJSON);
+                console.log(remote.multicastAddress + ':' + remote.multicastPort +' - ' + messageJSON);
                 var message = JSON.parse(messageJSON);
                 PeerList.addPeer(message.peer);
                 $rootScope.$broadcast('update peers');
@@ -45,7 +45,7 @@ angular.module('node-teiler.peerdiscovery', [])
 
         this.stop = function(callback) {
 
-            server.dropMembership(PeerDiscoveryConfig.address());
+            server.dropMembership(Config.multicastAddress());
             server.close();
 
             callback();
@@ -53,7 +53,7 @@ angular.module('node-teiler.peerdiscovery', [])
         };
 
     }])
-    .service('PeerDiscoveryBroadcaster', ['Peer', 'PeerDiscoveryConfig', function(Peer, PeerDiscoveryConfig) {
+    .service('PeerDiscoveryBroadcaster', ['Peer', 'Config', function(Peer, Config) {
 
         var dgram = require('dgram');
         var message = {
@@ -67,10 +67,10 @@ angular.module('node-teiler.peerdiscovery', [])
 
             var client = dgram.createSocket('udp4');
 
-            client.send(messageJSON, 0, messageJSON.length, PeerDiscoveryConfig.port(), PeerDiscoveryConfig.address(), function(err, bytes) {
+            client.send(messageJSON, 0, messageJSON.length, Config.multicastPort(), Config.multicastAddress(), function(err, bytes) {
 
                 if (err) throw err;
-                console.log("UDP message: " + messageJSON + " sent to " + PeerDiscoveryConfig.address() +":"+ PeerDiscoveryConfig.port());
+                console.log("UDP message: " + messageJSON + " sent to " + Config.multicastAddress() +":"+ Config.multicastPort());
                 client.close();
 
             })

@@ -72,17 +72,23 @@ angular.module('node-teiler', [
         }
 
     }])
-    .service('PeerDiscoveryConfig', [function() {
+    .service('Config', [function() {
 
-        var address = '224.0.0.114';
-        var port = 8088;
+        var multicastAddress = '224.0.0.114';
+        var multicastPort = 8888;
 
-        this.address = function() {
-            return address;
+        var fileTransferPort = 9999;
+
+        this.multicastAddress = function () {
+            return multicastAddress;
         };
 
-        this.port = function() {
-            return port;
+        this.multicastPort = function () {
+            return multicastPort;
+        };
+
+        this.fileTransferPort = function() {
+            return fileTransferPort;
         }
 
     }]);
