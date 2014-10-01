@@ -162,9 +162,9 @@ angular.module('node-teiler', [
     .service('Config', [function() {
 
         var multicastAddress = '224.0.0.114';
-        var multicastPort = 8888;
+        var multicastPort = 8886;
 
-        var fileTransferPort = 9999;
+        var fileTransferPort = 9996;
 
         this.multicastAddress = function () {
             return multicastAddress;

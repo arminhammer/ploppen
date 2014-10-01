@@ -9,39 +9,46 @@ angular.module('node-teiler.list', [])
         $scope.peers = PeerList.list();
 
         $scope.$on('update peers', function() {
-            $scope.$apply();
-        });
 
-        $scope.clickSendButton = function(clickEvent, peerName) {
-            console.log("Clicked Send Button!");
+			$scope.$apply();
+
+		});
+
+		function setDialogListener(name) {
+
+			var listener = $(name);
+
+			listener.change(function(evt) {
+
+				var filePath = $(this).val()
+				console.log(filePath);
+
+			});
+
+			return listener;
+
+		}
+
+		var fileInputDialogListener = setDialogListener('#fileInputDialog');
+		var fileSaveDialogListener = setDialogListener('#fileSaveDialog');
+
+        $scope.clickSendButton = function(clickEvent, peer) {
+
+			console.log("Clicked Send Button!");
             console.log(clickEvent);
 
-            function chooseFile(name) {
+            fileInputDialogListener.trigger('click');
 
-                var chooser = $(name);
-                chooser.change(function(evt) {
-                    console.log($(this).val());
-                });
+		};
 
-                chooser.trigger('click');
+        $scope.clickDownloadButton = function(clickEvent, file, peer) {
 
-            }
-            chooseFile('#fileInputDialog');
-        };
-
-        $scope.clickDownloadButton = function(clickEvent, file) {
-            console.log("Clicked Download Button for " + file.name);
+			console.log("Clicked Download Button for " + file.name);
             console.log(clickEvent);
-            function chooseFile(name) {
-                var chooser = $(name);
-                chooser.change(function(evt) {
-                    console.log($(this).val());
-                });
 
-                chooser.trigger('click');
-            }
-            chooseFile('#fileSaveDialog');
-        };
+			fileSaveDialogListener.trigger('click');
+
+		};
 
         PeerDiscoveryListener.start(function() {
 

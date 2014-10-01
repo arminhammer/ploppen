@@ -50,11 +50,11 @@
             <ul class="table-view">
                 <li class="table-view-cell">
                     <strong>{{ peer.name }}</strong>
-                    <button class="btn btn-negative sendButton" ng-click="clickSendButton($event, peer.name)" >Send a File</button>
+                    <button class="btn btn-negative sendButton" ng-click="clickSendButton($event, peer)" >Send a File</button>
                 </li>
                 <li ng-repeat="file in peer.files" class="table-view-cell">
                     {{ file.name }}
-                    <button class="btn btn-positive" ng-click="clickDownloadButton($event, file)" >Download File</button>
+                    <button class="btn btn-positive" ng-click="clickDownloadButton($event, file, peer)" >Download File</button>
                 </li>
             </ul>
         </div>

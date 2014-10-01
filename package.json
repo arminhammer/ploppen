@@ -4,8 +4,8 @@
   "single-instance": true,
   "private": true,
   "version": "0.0.0",
-  "description": "A starter project for AngularJS",
-  "repository": "https://github.com/angular/angular-seed",
+  "description": "A P2P file-sharing utility using nodejs, angular, and node-webkit",
+  "repository": "https://github.com/arminhammer/node-teiler",
   "license": "MIT",
   "devDependencies": {
     "karma": "~0.12.23",
