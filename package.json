@@ -22,7 +22,7 @@
   "window": {
     "title": "node-webkit demo",
     "icon": "link.png",
-    "toolbar": false,
+    "toolbar": true,
     "frame": false,
     "width": 400,
     "height": 700
