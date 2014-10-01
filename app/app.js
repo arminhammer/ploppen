@@ -98,14 +98,14 @@ angular.module('node-teiler', [
 
         this.print = function() {
 
-            console.log("Printing peer list:");
+            //console.log("Printing peer list:");
 
             for (var key in peers) {
 
                 if (peers.hasOwnProperty(key)) {
 
-                    console.log(peers[key].name);
-                    console.log(peers[key].socket);
+                    //console.log(peers[key].name);
+                    //console.log(peers[key].socket);
                 }
             }
 

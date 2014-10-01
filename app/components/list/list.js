@@ -12,14 +12,35 @@ angular.module('node-teiler.list', [])
             $scope.$apply();
         });
 
-        $scope.clickSendButton = function(clickEvent) {
+        $scope.clickSendButton = function(clickEvent, peerName) {
             console.log("Clicked Send Button!");
             console.log(clickEvent);
+
+            function chooseFile(name) {
+
+                var chooser = $(name);
+                chooser.change(function(evt) {
+                    console.log($(this).val());
+                });
+
+                chooser.trigger('click');
+
+            }
+            chooseFile('#fileInputDialog');
         };
 
         $scope.clickDownloadButton = function(clickEvent, file) {
             console.log("Clicked Download Button for " + file.name);
             console.log(clickEvent);
+            function chooseFile(name) {
+                var chooser = $(name);
+                chooser.change(function(evt) {
+                    console.log($(this).val());
+                });
+
+                chooser.trigger('click');
+            }
+            chooseFile('#fileSaveDialog');
         };
 
         PeerDiscoveryListener.start(function() {
