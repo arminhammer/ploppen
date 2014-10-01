@@ -34,6 +34,7 @@ body {
     font-size: 16px;
     font-family: "Open Sans",serif;
     background: transparent;
+    -webkit-app-region: drag;
 }
 
 .margin-base-vertical {
@@ -58,4 +59,12 @@ html {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+}
+
+.btn {
+    -webkit-app-region: no-drag;
+}
+
+.textInput {
+    -webkit-app-region: no-drag;
 }

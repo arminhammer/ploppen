@@ -21,17 +21,17 @@
   "window": {
     "title": "node-webkit demo",
     "icon": "link.png",
-    "toolbar": true,
-    "frame": true,
-    "width": 500,
-    "height": 1000
+    "toolbar": false,
+    "frame": false,
+    "width": 400,
+    "height": 700
   },
   "scripts": {
     "postinstall": "bower install",
 
     "prestart": "npm install",
-    "start": "http-server -a localhost -p 8000 -c-1",
-
+    "http-start": "http-server -a localhost -p 8000 -c-1",
+	"start" : "nodewebkit",
     "pretest": "npm install",
     "test": "karma start karma.conf.js",
     "test-single-run": "karma start karma.conf.js  --single-run",
