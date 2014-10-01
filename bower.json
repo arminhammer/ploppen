@@ -11,6 +11,7 @@
     "angular-loader": "1.2.x",
     "angular-mocks": "~1.2.x",
     "html5-boilerplate": "~4.3.0",
-    "ratchet": "~v2.0.2"
+    "ratchet": "~v2.0.2",
+	"jquery" : "~2.1.1"
   }
 }

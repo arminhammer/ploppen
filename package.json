@@ -15,7 +15,8 @@
     "shelljs": "^0.3.0",
     "karma-junit-reporter": "^0.2.2",
     "socket.io" : "~1.1.0",
-    "socket.io-client" : "~1.1.0"
+    "socket.io-client" : "~1.1.0",
+	"nodewebkit" : "~0.10.5"
   },
   "window": {
     "title": "node-webkit demo",
