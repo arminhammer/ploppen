@@ -1,7 +1,7 @@
 {
   "name": "angular-seed",
-  "main" : "app/index.html",
-  "single-instance" : true,
+  "main": "app/index.html",
+  "single-instance": true,
   "private": true,
   "version": "0.0.0",
   "description": "A starter project for AngularJS",
@@ -14,9 +14,10 @@
     "bower": "^1.3.2",
     "shelljs": "^0.3.0",
     "karma-junit-reporter": "^0.2.2",
-    "socket.io" : "~1.1.0",
-    "socket.io-client" : "~1.1.0",
-	"nodewebkit" : "~0.10.5"
+    "socket.io": "~1.1.0",
+    "socket.io-client": "~1.1.0",
+    "nodewebkit": "~0.10.5",
+    "node-webkit-builder": "~0.1.3"
   },
   "window": {
     "title": "node-webkit demo",
@@ -28,20 +29,16 @@
   },
   "scripts": {
     "postinstall": "bower install",
-
     "prestart": "npm install",
     "http-start": "http-server -a localhost -p 8000 -c-1",
-	"start" : "nodewebkit",
+    "start": "nwbuild -r .",
     "pretest": "npm install",
     "test": "karma start karma.conf.js",
     "test-single-run": "karma start karma.conf.js  --single-run",
-
     "preupdate-webdriver": "npm install",
     "update-webdriver": "webdriver-manager update",
-
     "preprotractor": "npm run update-webdriver",
     "protractor": "protractor e2e-tests/protractor.conf.js",
-
     "update-index-async": "node -e \"require('shelljs/global'); sed('-i', /\\/\\/@@NG_LOADER_START@@[\\s\\S]*\\/\\/@@NG_LOADER_END@@/, '//@@NG_LOADER_START@@\\n' + sed(/sourceMappingURL=angular-loader.min.js.map/,'sourceMappingURL=bower_components/angular-loader/angular-loader.min.js.map','app/bower_components/angular-loader/angular-loader.min.js') + '\\n//@@NG_LOADER_END@@', 'app/index-async.html');\""
   }
 }
