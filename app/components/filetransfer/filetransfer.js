@@ -30,40 +30,4 @@ angular.module('node-teiler.filetransfer', [])
 
         };
 
-    }])
-    .service('FileTransferClient', ['Config', 'PeerList', function(Config, PeerList) {
-
-        this.connect = function(peer, callback) {
-
-            var ioc = require('socket.io-client');
-
-            var socket = ioc.connect('http://' + peer.address + ':' + peer.port);
-
-            socket.emit('private message', { peer: peer.name, message: "Hi World!"});
-
-            socket.on('news', function (data) {
-
-                console.log(data);
-                socket.emit('my other event', { my: 'data' });
-
-            });
-
-            PeerList.print();
-
-            peer.socket = socket;
-
-            console.log("peer.socket: " + peer.socket);
-
-            PeerList.print();
-
-            callback();
-
-        };
-
-        this.disconnect = function(peer, callback) {
-
-            callback();
-
-        };
-
     }]);

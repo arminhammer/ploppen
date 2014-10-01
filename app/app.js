@@ -25,6 +25,8 @@ angular.module('node-teiler', [
     }])
     .service('PeerList', [function() {
 
+        var ioc = require('socket.io-client');
+
         var peers = {};
 
         peers["Peer 1"] = {
@@ -96,12 +98,14 @@ angular.module('node-teiler', [
 
         this.print = function() {
 
+            console.log("Printing peer list:");
+
             for (var key in peers) {
 
                 if (peers.hasOwnProperty(key)) {
 
-                    console.log(JSON.stringify(peers[key]));
-
+                    console.log(peers[key].name);
+                    console.log(peers[key].socket);
                 }
             }
 
@@ -115,15 +119,42 @@ angular.module('node-teiler', [
 
         this.addPeer = function(peer, callback) {
 
+            var added = false;
+
             if(!this.contains(peer)) {
+
+                peer.socket = ioc.connect('http://' + peer.address + ':' + peer.port);
+
+                peer.socket.emit('private message', { peer: peer.name, message: "Hi World!"});
+
+                peer.socket.on('news', function (data) {
+
+                    console.log(data);
+                    peer.socket.emit('my other event', { my: 'data' });
+
+                });
+
+                peer.socket.on('disconnect', function() {
+                    console.log(peer.socket + "disconnected.");
+                });
+
+                console.log("peer.socket: " + peer.socket);
+
                 peers[peer.name] = peer;
                 console.log(peers[peer.name].name + " added to peers");
+
+                added = true;
+
             }
             else{
+
                 console.log(peer.name + " is already in the list!");
+
             }
 
-            callback();
+            this.print();
+
+            callback(added);
 
         }
 
