@@ -72,7 +72,7 @@
     "postinstall": "bower install",
     "prestart": "npm install && grunt bower-install",
     "http-start": "http-server -a localhost -p 8000 -c-1",
-    "start": "nwbuild -r .",
+    "nw-start": "nwbuild -r .",
     "pretest": "npm install",
     "test": "karma start karma.conf.js",
     "test-single-run": "karma start karma.conf.js  --single-run",

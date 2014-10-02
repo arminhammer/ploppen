@@ -10,8 +10,10 @@ angular.module('node-teiler', [
 ])
     .service('Peer', ['Config', function(Config) {
 
+		var os = require('os');
+
         var myPeer = {
-            name: "localhost",
+            name: os.hostname(),
             address: "0.0.0.0",
             port: Config.fileTransferPort()
         };
