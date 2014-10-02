@@ -57,7 +57,8 @@
     "karma-coffee-preprocessor": "~0.2.1",
     "karma-requirejs": "~0.2.1",
     "karma-phantomjs-launcher": "~0.1.4",
-    "karma-ng-html2js-preprocessor": "~0.1.0"
+    "karma-ng-html2js-preprocessor": "~0.1.0",
+    "grunt-node-webkit-builder": "~0.2.3"
   },
   "window": {
     "title": "node-webkit demo",

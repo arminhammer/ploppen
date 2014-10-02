@@ -234,6 +234,14 @@ module.exports = function (grunt) {
             }
         },
 
+        nodewebkit: {
+            options: {
+                platforms: ['win','osx', 'linux'],
+                buildDir: './nwbuilds', // Where the build version of my node-webkit app is saved
+            },
+            src: ['./app/**/*'] // Your node-webkit app
+        },
+
         copy: {
             dist: {
                 files: [{
