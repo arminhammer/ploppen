@@ -22,6 +22,7 @@ angular.module('node-teiler.list', [])
 
 				var filePath = $(this).val()
 				console.log(filePath);
+                return $(this).val();
 
 			});
 
@@ -37,16 +38,17 @@ angular.module('node-teiler.list', [])
 			console.log("Clicked Send Button!");
             console.log(clickEvent);
 
-            fileInputDialogListener.trigger('click');
-
-		};
+            var fileName = fileInputDialogListener.trigger('click');
+            console.log("THIS IS THE FILE: " + fileName);
+        };
 
         $scope.clickDownloadButton = function(clickEvent, file, peer) {
 
 			console.log("Clicked Download Button for " + file.name);
             console.log(clickEvent);
 
-			fileSaveDialogListener.trigger('click');
+            var fileName = fileSaveDialogListener.trigger('click');
+            console.log("THIS IS THE FILE: " + fileName);
 
 		};
 
