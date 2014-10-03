@@ -10,13 +10,44 @@ angular.module('node-teiler', [
 ])
     .service('Peer', ['Config', function(Config) {
 
-		var os = require('os');
+        var os = require('os');
+        var dns = require('dns');
 
         var myPeer = {
+
             name: os.hostname(),
-            address: "0.0.0.0",
+            address: getIPAddress(),
             port: Config.fileTransferPort()
+
         };
+
+        //var addresses = getLocalAddresses();
+
+        this.localAddresses = function() {
+
+            var ifaces = os.networkInterfaces();
+            var iList = [];
+
+            for (var dev in ifaces) {
+                console.log("IFACE: " + ifaces[dev]);
+                var alias = 0;
+                ifaces[dev].forEach(function (details) {
+
+                    if (details.family == 'IPv4') {
+
+                        console.log("DEETS: " + dev + (alias ? ':' + alias : ''), details.address);
+                        iList.push(details.address);
+                        ++alias;
+
+                    }
+
+                })
+
+            }
+
+            return iList;
+
+        }
 
         this.myPeer = function() {
 
@@ -24,7 +55,17 @@ angular.module('node-teiler', [
 
         };
 
+        function getIPAddress() {
+
+            dns.lookup(os.hostname(), function (err, add, fam) {
+
+                console.log(add);
+            });
+
+        }
+
     }])
+
     .service('PeerList', [function() {
 
         var ioc = require('socket.io-client');
@@ -32,16 +73,16 @@ angular.module('node-teiler', [
         var peers = {};
 
         /*
-        peers["Peer 1"] = {
-            name : "Peer 1",
-            address: "localhost",
-            port: 9999,
-            files : [
-                { name : "File 1" },
-                { name : "File 2" }
-            ]
-        };
-        */
+         peers["Peer 1"] = {
+         name : "Peer 1",
+         address: "localhost",
+         port: 9999,
+         files : [
+         { name : "File 1" },
+         { name : "File 2" }
+         ]
+         };
+         */
 
         this.list = function() {
 

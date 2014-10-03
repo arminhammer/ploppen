@@ -5,101 +5,104 @@
 
 // Declare app level module which depends on views, and components
 angular.module('node-teiler.peerdiscovery', [])
-	.service('PeerDiscoveryListener', ['$rootScope', 'Peer', 'Config', 'PeerList', function($rootScope, Peer, Config, PeerList) {
+    .service('PeerDiscoveryListener', ['$rootScope', 'Peer', 'Config', 'PeerList', function($rootScope, Peer, Config, PeerList) {
 
-		var dgram = require('dgram');
-		var server;
+        var dgram = require('dgram');
+        var server;
 
-		this.start = function(callback) {
+        this.start = function(callback) {
 
-			server = dgram.createSocket('udp4');
+            server = dgram.createSocket('udp4');
 
-			server.bind(Config.multicastPort(), function() {
+            server.bind(Config.multicastPort(), function() {
 
-				server.addMembership(Config.multicastAddress());
-				server.setBroadcast(true);
-				server.setMulticastTTL(5);
-				server.setMulticastLoopback(false);
+                server.addMembership(Config.multicastAddress());
+                server.setBroadcast(true);
+                server.setMulticastTTL(5);
+                server.setMulticastLoopback(false);
 
-			});
+            });
 
-			server.on('listening', function () {
+            server.on('listening', function () {
 
-				var address = server.address();
-				console.log('Peer Discovery Listener listening on ' + address.address + ":" + address.port);
+                var address = server.address();
+                console.log('Peer Discovery Listener listening on ' + address.address + ":" + address.port);
 
-			});
+            });
 
-			server.on('message', function (messageJSON, remote) {
+            server.on('message', function (messageJSON, remote) {
 
-				console.log(remote.multicastAddress + ':' + remote.multicastPort +' - ' + messageJSON);
-				var message = JSON.parse(messageJSON);
-				var peer = message.peer;
-				peer.address = remote.address;
+                console.log("MESSAGE: " + remote.address + ':' + remote.port +' - ' + messageJSON);
 
-				PeerList.addPeer(peer, function(added) {
+                if(Peer.localAddresses().indexOf(remote.address) < 0) {
 
-					if(added) {
-						console.log("Peer " + peer.name + " was added.");
-						$rootScope.$broadcast('update peers');
-					}
-					else {
-						console.log("Peer " + peer + " was not added");
-					}
+                    var message = JSON.parse(messageJSON);
+                    var peer = message.peer;
+                    peer.address = remote.address;
 
-				});
+                    PeerList.addPeer(peer, function (added) {
 
+                        if (added) {
+                            console.log("Peer " + peer.name + " was added.");
+                            $rootScope.$broadcast('update peers');
+                        }
+                        else {
+                            console.log("Peer " + peer + " was not added");
+                        }
 
-			});
+                    });
+                }
 
-			callback();
+            });
 
-		};
+            callback();
 
-		this.stop = function(callback) {
+        };
 
-			server.dropMembership(Config.multicastAddress());
-			server.close();
+        this.stop = function(callback) {
 
-			callback();
+            server.dropMembership(Config.multicastAddress());
+            server.close();
 
-		};
+            callback();
 
-	}])
-	.service('PeerDiscoveryBroadcaster', ['Peer', 'Config', function(Peer, Config) {
+        };
 
-		var dgram = require('dgram');
+    }])
+    .service('PeerDiscoveryBroadcaster', ['Peer', 'Config', function(Peer, Config) {
 
-		function genMessage() {
-			var body = {
-				timestamp: Date.now(),
-				peer: Peer.myPeer()
-			};
-			return new Buffer(JSON.stringify(body));
-		}
+        var dgram = require('dgram');
 
-		function broadCastMessage() {
+        function genMessage() {
+            var body = {
+                timestamp: Date.now(),
+                peer: Peer.myPeer()
+            };
+            return new Buffer(JSON.stringify(body));
+        }
 
-			var client = dgram.createSocket('udp4');
+        function broadCastMessage() {
 
-			var messageJSON = genMessage();
+            var client = dgram.createSocket('udp4');
 
-			client.send(messageJSON, 0, messageJSON.length, Config.multicastPort(), Config.multicastAddress(), function(err, bytes) {
+            var messageJSON = genMessage();
 
-				if (err) throw err;
-				console.log("UDP message: " + messageJSON + " sent to " + Config.multicastAddress() +":"+ Config.multicastPort());
-				client.close();
+            client.send(messageJSON, 0, messageJSON.length, Config.multicastPort(), Config.multicastAddress(), function(err, bytes) {
 
-			})
+                if (err) throw err;
+                console.log("UDP message: " + messageJSON + " sent to " + Config.multicastAddress() +":"+ Config.multicastPort());
+                client.close();
 
-		}
+            })
 
-		this.start = function(callback) {
+        }
 
-			setInterval(broadCastMessage, 3000);
+        this.start = function(callback) {
 
-			callback();
+            setInterval(broadCastMessage, 3000);
 
-		}
+            callback();
 
-	}]);
+        }
+
+    }]);
