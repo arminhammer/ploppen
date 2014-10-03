@@ -49,6 +49,7 @@ angular.module('node-teiler.list', [])
 
             //fileInputDialogListener.trigger('click');
             $('#' + peer.name + 'fileInputDialog').trigger('click');
+			console.log("Clicked on " + '#' + peer.name + 'fileInputDialog');
 
         };
 
@@ -80,8 +81,8 @@ angular.module('node-teiler.list', [])
 
         });
 
-        $scope.sendFile  = function() {
-            console.log("BLAH");
+        $scope.sendFile  = function(peer) {
+            console.log("BLAH " + peer.name);
         }
 
     }])
@@ -90,12 +91,16 @@ angular.module('node-teiler.list', [])
             restrict: 'A',
             scope:{'onChange':'&' },
             link: function(scope, elm, attrs) {
-                scope.$watch('onChange', function(nVal) { elm.val(nVal); });
-                elm.bind('change', function() {
-                    var currentValue = elm.val();
-                    console.log("OMG IT WORKED " + elm.val());
+                //scope.$watch('onChange', function(nVal) { elm.val(nVal); });
+				//console.log("Scopen1: " + scope.onChange());
 
-                    scope.sendFile({peer: peer });
+				elm.bind('change', function() {
+
+					console.log("Scopen2: " + scope.onChange());
+                    //var currentValue = elm.val();
+                    //console.log("OMG IT WORKED " + elm.val() + " and " + {peer : peer});
+
+                    //scope.sendFile({peer: peer }, elm.val());
                     /*
                     scope.sendFile()
                     if( scope.onChange !== currentValue ) {

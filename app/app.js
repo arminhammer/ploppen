@@ -2,208 +2,206 @@
 
 // Declare app level module which depends on views, and components
 angular.module('node-teiler', [
-    'node-teiler.list',
-    'node-teiler.peerdiscovery',
-    'node-teiler.filetransfer'
+	'node-teiler.list',
+	'node-teiler.peerdiscovery',
+	'node-teiler.filetransfer'
 
 ])
-    .service('Peer', ['Config', function(Config) {
+	.service('Peer', ['Config', function(Config) {
 
-        var os = require('os');
-        var dns = require('dns');
+		var os = require('os');
+		var dns = require('dns');
 
-        var myPeer = {
+		var myPeer = {
 
-            name: os.hostname(),
-            address: getIPAddress(),
-            port: Config.fileTransferPort()
+			name: os.hostname(),
+			address: getIPAddress(),
+			port: Config.fileTransferPort()
 
-        };
+		};
 
-        //var addresses = getLocalAddresses();
+		//var addresses = getLocalAddresses();
 
-        this.localAddresses = function() {
+		this.localAddresses = function() {
 
-            var ifaces = os.networkInterfaces();
-            var iList = [];
+			var ifaces = os.networkInterfaces();
+			var iList = [];
 
-            for (var dev in ifaces) {
-                //console.log("IFACE: " + ifaces[dev]);
-                var alias = 0;
-                ifaces[dev].forEach(function (details) {
+			for (var dev in ifaces) {
+				//console.log("IFACE: " + ifaces[dev]);
+				var alias = 0;
+				ifaces[dev].forEach(function (details) {
 
-                    if (details.family == 'IPv4') {
+					if (details.family == 'IPv4') {
 
-                        //console.log("DEETS: " + dev + (alias ? ':' + alias : ''), details.address);
-                        iList.push(details.address);
-                        ++alias;
+						//console.log("DEETS: " + dev + (alias ? ':' + alias : ''), details.address);
+						iList.push(details.address);
+						++alias;
 
-                    }
+					}
 
-                })
+				})
 
-            }
+			}
 
-            return iList;
+			return iList;
 
-        }
+		}
 
-        this.myPeer = function() {
+		this.myPeer = function() {
 
-            return myPeer;
+			return myPeer;
 
-        };
+		};
 
-        function getIPAddress() {
+		function getIPAddress() {
 
-            dns.lookup(os.hostname(), function (err, add, fam) {
+			dns.lookup(os.hostname(), function (err, add, fam) {
 
-                console.log(add);
-            });
+				console.log(add);
+			});
 
-        }
+		}
 
-    }])
+	}])
 
-    .service('PeerList', [function() {
+	.service('PeerList', [function() {
 
-        var ioc = require('socket.io-client');
+		var ioc = require('socket.io-client');
 
-        var peers = {};
+		var peers = {};
 
-        /*
-         peers["Peer 1"] = {
-         name : "Peer 1",
-         address: "localhost",
-         port: 9999,
-         files : [
-         { name : "File 1" },
-         { name : "File 2" }
-         ]
-         };
-         */
+		peers['localhost'] = {
+			name : 'localhost',
+			address: '127.0.0.1',
+			port: 9999,
+			files : [
+				{ name : "File 1" },
+				{ name : "File 2" }
+			]
+		};
 
-        this.list = function() {
+		this.list = function() {
 
-            return peers;
+			return peers;
 
-        };
+		};
 
-        this.count = function() {
+		this.count = function() {
 
-            var count = 0;
+			var count = 0;
 
-            for (var key in peers) {
+			for (var key in peers) {
 
-                if (peers.hasOwnProperty(key)) {
+				if (peers.hasOwnProperty(key)) {
 
-                    count++;
+					count++;
 
-                }
-            }
+				}
+			}
 
-            return count;
+			return count;
 
-        };
+		};
 
-        this.keys = function() {
+		this.keys = function() {
 
-            var keys = [];
+			var keys = [];
 
-            for (var key in peers) {
+			for (var key in peers) {
 
-                if (peers.hasOwnProperty(key)) {
+				if (peers.hasOwnProperty(key)) {
 
-                    keys.push(key);
+					keys.push(key);
 
-                }
-            }
+				}
+			}
 
-            return keys;
+			return keys;
 
-        };
+		};
 
-        this.print = function() {
+		this.print = function() {
 
-            //console.log("Printing peer list:");
+			//console.log("Printing peer list:");
 
-            for (var key in peers) {
+			for (var key in peers) {
 
-                if (peers.hasOwnProperty(key)) {
+				if (peers.hasOwnProperty(key)) {
 
-                    //console.log(peers[key].name);
-                    //console.log(peers[key].socket);
-                }
-            }
+					//console.log(peers[key].name);
+					//console.log(peers[key].socket);
+				}
+			}
 
-        };
+		};
 
-        this.contains = function(peer) {
+		this.contains = function(peer) {
 
-            return peers.hasOwnProperty(peer.name);
+			return peers.hasOwnProperty(peer.name);
 
-        };
+		};
 
-        this.addPeer = function(peer, callback) {
+		this.addPeer = function(peer, callback) {
 
-            var added = false;
+			var added = false;
 
-            if(!this.contains(peer)) {
+			if(!this.contains(peer)) {
 
-                peer.socket = ioc.connect('http://' + peer.address + ':' + peer.port);
+				peer.socket = ioc.connect('http://' + peer.address + ':' + peer.port);
 
-                peer.socket.emit('private message', { peer: peer.name, message: "Hi World!"});
+				peer.socket.emit('private message', { peer: peer.name, message: "Hi World!"});
 
-                peer.socket.on('news', function (data) {
+				peer.socket.on('news', function (data) {
 
-                    console.log(data);
-                    peer.socket.emit('my other event', { my: 'data' });
+					console.log(data);
+					peer.socket.emit('my other event', { my: 'data' });
 
-                });
+				});
 
-                peer.socket.on('disconnect', function() {
-                    console.log(peer.socket + "disconnected.");
-                });
+				peer.socket.on('disconnect', function() {
+					console.log(peer.socket + "disconnected.");
+				});
 
-                console.log("peer.socket: " + peer.socket);
+				console.log("peer.socket: " + peer.socket);
 
-                peers[peer.name] = peer;
-                console.log(peers[peer.name].name + " added to peers");
+				peers[peer.name] = peer;
+				console.log(peers[peer.name].name + " added to peers");
 
-                added = true;
+				added = true;
 
-            }
-            else{
+			}
+			else{
 
-                console.log(peer.name + " is already in the list!");
+				console.log(peer.name + " is already in the list!");
 
-            }
+			}
 
-            this.print();
+			this.print();
 
-            callback(added);
+			callback(added);
 
-        }
+		}
 
-    }])
-    .service('Config', [function() {
+	}])
+	.service('Config', [function() {
 
-        var multicastAddress = '224.0.0.114';
-        var multicastPort = 8886;
+		var multicastAddress = '224.0.0.114';
+		var multicastPort = 8886;
 
-        var fileTransferPort = 9996;
+		var fileTransferPort = 9996;
 
-        this.multicastAddress = function () {
-            return multicastAddress;
-        };
+		this.multicastAddress = function () {
+			return multicastAddress;
+		};
 
-        this.multicastPort = function () {
-            return multicastPort;
-        };
+		this.multicastPort = function () {
+			return multicastPort;
+		};
 
-        this.fileTransferPort = function() {
-            return fileTransferPort;
-        }
+		this.fileTransferPort = function() {
+			return fileTransferPort;
+		}
 
-    }]);
+	}]);
 
