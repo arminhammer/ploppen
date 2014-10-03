@@ -31,6 +31,7 @@ angular.module('node-teiler', [
 
         var peers = {};
 
+        /*
         peers["Peer 1"] = {
             name : "Peer 1",
             address: "localhost",
@@ -40,23 +41,7 @@ angular.module('node-teiler', [
                 { name : "File 2" }
             ]
         };
-
-        peers["Peer 2"] = {
-            name : "Peer 2",
-            address: "localhost",
-            port: 9999,
-            files : [
-                { name : "File 3" },
-                { name : "File 4" }
-            ]
-        };
-
-        peers["Peer 3"] = {
-            name : "Peer 3",
-            address: "localhost",
-            port: 9999,
-            files : []
-        };
+        */
 
         this.list = function() {
 
