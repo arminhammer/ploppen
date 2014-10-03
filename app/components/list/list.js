@@ -14,6 +14,7 @@ angular.module('node-teiler.list', [])
 
         });
 
+		/*
         function setDialogListener(name) {
 
             var inputListener = $('#' + name + 'fileInputDialog');
@@ -28,6 +29,7 @@ angular.module('node-teiler.list', [])
             });
 
         }
+		*/
 
         //var fileInputDialogListener = setDialogListener('#fileInputDialog');
         //var fileSaveDialogListener = setDialogListener('#fileSaveDialog');
@@ -36,11 +38,11 @@ angular.module('node-teiler.list', [])
             console.log("CHANGE FOUND");
             //var val = $('#' + peer.name + 'fileInputDialog').val();
             //console.log("VAL: " + val);
-        }
+        };
 
         $scope.fileNameChanged = function(scopen) {
             console.log("select file " + scopen.name);
-        }
+        };
 
         $scope.clickSendButton = function(clickEvent, peer) {
 
@@ -82,34 +84,22 @@ angular.module('node-teiler.list', [])
         });
 
         $scope.sendFile  = function(peer, file) {
-            console.log("BLAH " + peer.name + " file: " + file);
+            console.log("BLAH " + peer.name);
+			var val = $("#" + peer.name + "fileInputDialog").val();
+			console.log("FILENAME VALUE IS " + val);
         }
 
     }])
     .directive('onChange', function() {
         return {
             restrict: 'A',
-            //scope:{'onChange':'=' },
+            scope:{'onChange':'&' },
             link: function(scope, elm, attrs) {
 
 				elm.bind('change', function() {
 
-					//console.log("Scopen2: " + scope.onChange());
-                    //var currentValue = elm.val();
-					var fileName = elm.val();
-                    console.log("FILENAME: " + fileName);
+					scope.onChange();
 
-					scope.sendFile(null, file);
-                    //scope.sendFile({peer: peer }, elm.val());
-                    /*
-                    scope.sendFile()
-                    if( scope.onChange !== currentValue ) {
-                        scope.$apply(function() {
-                            console.log(scope + " OMG IT WORKED " + elm.val());
-                            //scope.onChange = currentValue;
-                        });
-                    }
-                    */
                 });
             }
         };

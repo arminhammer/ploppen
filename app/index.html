@@ -47,7 +47,7 @@
         </div>
         <div ng-view></div>
         <div class="card" ng-repeat="peer in peers">
-            <input style="display:none;" id="{{ peer.name }}fileInputDialog" type="file" on-change="peer" />
+            <input style="display:none;" id="{{ peer.name }}fileInputDialog" type="file" on-change="sendFile(peer)" />
             <input style="display:none;" id="{{ peer.name }}fileSaveDialog" type="file" nwsaveas="filename.txt" />
             <ul class="table-view">
                 <li class="table-view-cell">
