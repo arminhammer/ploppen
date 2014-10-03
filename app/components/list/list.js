@@ -81,25 +81,25 @@ angular.module('node-teiler.list', [])
 
         });
 
-        $scope.sendFile  = function(peer) {
-            console.log("BLAH " + peer.name);
+        $scope.sendFile  = function(peer, file) {
+            console.log("BLAH " + peer.name + " file: " + file);
         }
 
     }])
     .directive('onChange', function() {
         return {
             restrict: 'A',
-            scope:{'onChange':'&' },
+            //scope:{'onChange':'=' },
             link: function(scope, elm, attrs) {
-                //scope.$watch('onChange', function(nVal) { elm.val(nVal); });
-				//console.log("Scopen1: " + scope.onChange());
 
 				elm.bind('change', function() {
 
-					console.log("Scopen2: " + scope.onChange());
+					//console.log("Scopen2: " + scope.onChange());
                     //var currentValue = elm.val();
-                    //console.log("OMG IT WORKED " + elm.val() + " and " + {peer : peer});
+					var fileName = elm.val();
+                    console.log("FILENAME: " + fileName);
 
+					scope.sendFile(null, file);
                     //scope.sendFile({peer: peer }, elm.val());
                     /*
                     scope.sendFile()
