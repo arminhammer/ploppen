@@ -2,7 +2,6 @@
 
 // Declare app level module which depends on views, and components
 angular.module('node-teiler', [
-
     'node-teiler.list',
     'node-teiler.peerdiscovery',
     'node-teiler.filetransfer'
@@ -29,13 +28,13 @@ angular.module('node-teiler', [
             var iList = [];
 
             for (var dev in ifaces) {
-                console.log("IFACE: " + ifaces[dev]);
+                //console.log("IFACE: " + ifaces[dev]);
                 var alias = 0;
                 ifaces[dev].forEach(function (details) {
 
                     if (details.family == 'IPv4') {
 
-                        console.log("DEETS: " + dev + (alias ? ':' + alias : ''), details.address);
+                        //console.log("DEETS: " + dev + (alias ? ':' + alias : ''), details.address);
                         iList.push(details.address);
                         ++alias;
 

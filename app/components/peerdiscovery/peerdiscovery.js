@@ -32,7 +32,7 @@ angular.module('node-teiler.peerdiscovery', [])
 
             server.on('message', function (messageJSON, remote) {
 
-                console.log("MESSAGE: " + remote.address + ':' + remote.port +' - ' + messageJSON);
+                //console.log("MESSAGE: " + remote.address + ':' + remote.port +' - ' + messageJSON);
 
                 if(Peer.localAddresses().indexOf(remote.address) < 0) {
 
@@ -43,11 +43,11 @@ angular.module('node-teiler.peerdiscovery', [])
                     PeerList.addPeer(peer, function (added) {
 
                         if (added) {
-                            console.log("Peer " + peer.name + " was added.");
+                            //console.log("Peer " + peer.name + " was added.");
                             $rootScope.$broadcast('update peers');
                         }
                         else {
-                            console.log("Peer " + peer + " was not added");
+                            //console.log("Peer " + peer + " was not added.");
                         }
 
                     });

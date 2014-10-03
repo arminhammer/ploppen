@@ -45,10 +45,10 @@
                 <input class="textInput" type="text" ng-model="myPeer.name" ng-model-options="{ updateOn: 'blur' }" placeholder="My Computer">
             </form>
         </div>
-        <input style="display:none;" id="fileInputDialog" type="file" />
-        <input style="display:none;" id="fileSaveDialog" type="file" nwsaveas="filename.txt" />
         <div ng-view></div>
         <div class="card" ng-repeat="peer in peers">
+            <input style="display:none;" id="{{ peer.name }}fileInputDialog" type="file" on-change= />
+            <input style="display:none;" id="{{ peer.name }}fileSaveDialog" type="file" nwsaveas="filename.txt" />
             <ul class="table-view">
                 <li class="table-view-cell">
                     <strong>{{ peer.name }}</strong>
