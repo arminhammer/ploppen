@@ -34,7 +34,7 @@ angular.module('node-teiler.peerdiscovery', [])
 
                 //console.log("MESSAGE: " + remote.address + ':' + remote.port +' - ' + messageJSON);
 
-                if(Peer.localAddresses().indexOf(remote.address) < 0) {
+                if(Peer.localAddr().indexOf(remote.address) < 0) {
 
                     var message = JSON.parse(messageJSON);
                     var peer = message.peer;
