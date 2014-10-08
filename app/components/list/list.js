@@ -87,7 +87,7 @@ angular.module('node-teiler.list', [])
             console.log("BLAH " + peer.name);
 			var val = $("#" + peer.name + "fileInputDialog").val();
 			console.log("FILENAME VALUE IS " + val);
-            peer.socket.emit('file', { 'filename' : val });
+            peer.socket.emit('file', { filename : val, peername : Peer.myPeer().name });
         }
 
     }])

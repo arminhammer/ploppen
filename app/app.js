@@ -42,7 +42,7 @@ angular.module('node-teiler', [
 
             }
 
-            console.log("iList: " + iList);
+            //console.log("iList: " + iList);
             return iList;
 
         }
@@ -64,11 +64,11 @@ angular.module('node-teiler', [
 
             while(count < ifaces.length) {
 
-                console.log("NEXT IF: " + ifaces[count]);
+                //console.log("NEXT IF: " + ifaces[count]);
 
                 if(!(ifaces[count] == "127.0.0.1")) {
 
-                    console.log("INTERFACE: " + ifaces[count]);
+                    //console.log("INTERFACE: " + ifaces[count]);
                     return ifaces[count];
 
                 } else {
@@ -78,7 +78,7 @@ angular.module('node-teiler', [
                 }
             }
 
-            console.log("INTERFACE: " + ifaces[0]);
+            //console.log("INTERFACE: " + ifaces[0]);
 
             return ifaces[0];
         }
@@ -188,11 +188,6 @@ angular.module('node-teiler', [
                 peers[peer.name].socket.on('disconnect', function() {
                     console.log(this.peers[peer.name].socket + "disconnected.");
                 });
-
-                //console.log("peer.socket: " + this.peers[peer.name].socket);
-
-
-                //console.log(peers[peer.name].name + " added to peers");
 
                 added = true;
 

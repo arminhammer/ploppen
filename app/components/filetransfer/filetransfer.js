@@ -5,7 +5,7 @@
 
 // Declare app level module which depends on views, and components
 angular.module('node-teiler.filetransfer', [])
-    .service('FileTransferServer', ['Config', function(Config) {
+    .service('FileTransferServer', ['$rootScope', 'Config', 'PeerList', function($rootScope, Config, PeerList) {
 
         this.start = function(callback) {
 
@@ -23,6 +23,8 @@ angular.module('node-teiler.filetransfer', [])
 
                 socket.on('file', function(data) {
                     console.log("File received: " + data.filename);
+                    PeerList.list()[data.peername].files.push({ name : data.filename });
+                    $rootScope.$broadcast('update peers');
                 });
 
                 socket.on('disconnect', function () {
