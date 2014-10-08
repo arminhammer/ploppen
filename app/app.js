@@ -74,7 +74,7 @@ angular.module('node-teiler', [
 		peers['localhost'] = {
 			name : 'localhost',
 			address: '127.0.0.1',
-			port: 9999,
+			port: 9996,
 			files : [
 				{ name : "File 1" },
 				{ name : "File 2" }
@@ -148,25 +148,32 @@ angular.module('node-teiler', [
 
 			if(!this.contains(peer)) {
 
-				peer.socket = ioc.connect('http://' + peer.address + ':' + peer.port);
+                peers[peer.name] = peer;
 
-				peer.socket.emit('private message', { peer: peer.name, message: "Hi World!"});
+				this.peers[peer.name].socket = ioc.connect('http://' + peer.address + ':' + peer.port);
+                console.log("Connecting to http://" + peer.address + ':' + peer.port);
 
-				peer.socket.on('news', function (data) {
+                this.peers[peer.name].socket.emit('private message', { peer: peer.name, message: "Hi World!"});
+
+                this.peers[peer.name].socket.on('news', function (data) {
 
 					console.log(data);
-					peer.socket.emit('my other event', { my: 'data' });
+                    this.peers[peer.name].socket.emit('my other event', { my: 'data' });
 
 				});
 
-				peer.socket.on('disconnect', function() {
-					console.log(peer.socket + "disconnected.");
+                this.peers[peer.name].socket.on('file', function(data) {
+                   console.log("File received: " + data.filename);
+                });
+
+                this.peers[peer.name].socket.on('disconnect', function() {
+					console.log(this.peers[peer.name].socket + "disconnected.");
 				});
 
-				console.log("peer.socket: " + peer.socket);
+				//console.log("peer.socket: " + this.peers[peer.name].socket);
 
-				peers[peer.name] = peer;
-				console.log(peers[peer.name].name + " added to peers");
+
+				//console.log(peers[peer.name].name + " added to peers");
 
 				added = true;
 

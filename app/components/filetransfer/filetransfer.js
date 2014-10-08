@@ -9,19 +9,20 @@ angular.module('node-teiler.filetransfer', [])
 
         this.start = function(callback) {
 
-            // note, io.listen(&lt;port&gt;) will create a http server for you
-            var io = require('socket.io')(Config.fileTransferPort());
+            var server = require('http').createServer();
+            var socket = require('socket.io')(server);
+            server.listen(Config.fileTransferPort());
 
-            io.on('connection', function (socket) {
+            socket.on('connection', function (socket) {
 
-                io.emit('this', { will: 'be received by everyone'});
+                socket.emit('this', { will: 'be received by everyone'});
 
                 socket.on('private message', function (message) {
                     console.log('I received a private message by ', message.peer, ' saying ', message.message);
                 });
 
                 socket.on('disconnect', function () {
-                    io.sockets.emit('user disconnected');
+                    socket.sockets.emit('user disconnected');
                 });
 
             });
