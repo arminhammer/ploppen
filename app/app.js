@@ -189,6 +189,8 @@ angular.module('node-teiler', [
                     console.log(this.peers[peer.name].socket + "disconnected.");
                 });
 
+                peers[peer.name].files = [];
+
                 added = true;
 
             }

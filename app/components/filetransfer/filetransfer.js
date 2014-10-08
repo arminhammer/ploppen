@@ -23,7 +23,8 @@ angular.module('node-teiler.filetransfer', [])
 
                 socket.on('file', function(data) {
                     console.log("File received: " + data.filename);
-                    PeerList.list()[data.peername].files.push({ name : data.filename });
+                    var peerList = PeerList.list();
+                    peerList[data.peername].files.push({ name : data.filename });
                     $rootScope.$broadcast('update peers');
                 });
 
