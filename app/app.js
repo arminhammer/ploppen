@@ -49,7 +49,7 @@ angular.module('node-teiler', [
 
         this.localAddr = function() {
             return getLocalAddr();
-        }
+        };
 
         this.myPeer = function() {
 
@@ -183,10 +183,6 @@ angular.module('node-teiler', [
                     console.log(data);
                     peers[peer.name].socket.emit('my other event', { my: 'data' });
 
-                });
-
-                peers[peer.name].socket.on('file', function(data) {
-                    console.log("File received: " + data.filename);
                 });
 
                 peers[peer.name].socket.on('disconnect', function() {

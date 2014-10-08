@@ -21,6 +21,10 @@ angular.module('node-teiler.filetransfer', [])
                     console.log('I received a private message by ', message.peer, ' saying ', message.message);
                 });
 
+                socket.on('file', function(data) {
+                    console.log("File received: " + data.filename);
+                });
+
                 socket.on('disconnect', function () {
                     socket.sockets.emit('user disconnected');
                 });
