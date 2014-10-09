@@ -187,6 +187,18 @@ angular.module('node-teiler', [
 
                 });
 
+                peers[peer.name].socket.on('file.download.start', function(data) {
+                    console.log("Received download start message: " + data);
+                });
+
+                peers[peer.name].socket.on('file.download.data', function(data) {
+                    //console.log("Received download end message: " + data);
+                });
+
+                peers[peer.name].socket.on('file.download.end', function(data) {
+                    console.log("Received download end message: " + data);
+                });
+
                 peers[peer.name].socket.on('disconnect', function() {
                     console.log(peer.name + " disconnected.");
                 });

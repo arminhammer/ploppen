@@ -38,32 +38,34 @@ angular.module('node-teiler.filetransfer', [])
                             console.log("There was a problem reading " + data.filename + ": " + err);
                         }
                         else {
-                            console.log(data.filename + " is size " + stats.size);
+                            var fileSize = stats.size;
+                            console.log(data.filename + " is size " + fileSize);
+                            var readableFile = fs.ReadStream(data.filename);
+                            readableFile
+                                .on('open', function() {
+                                    console.log("Opened file: " + data.filename);
+                                    peerList[data.peername].socket.emit('file.download.start', { name: data.filename, size: fileSize });
+                                })
+
+                                .on('readable', function () {
+                                    var chunk;
+                                    while (null !== (chunk = readableFile.read())) {
+                                        console.log(count + " chunk size: " + chunk.length);
+                                        peerList[data.peername].socket.emit('file.download.data', { name: data.filename, data: chunk });
+                                    }
+                                })
+
+                                .on('end', function () {
+                                    console.log("Finished reading file");
+                                    peerList[data.peername].socket.emit('file.download.end', { name: data.filename });
+                                })
+
+                                .on('error', function(err) {
+                                    console.log("Error opening file: " + err);
+                                });
+
                         }
                     });
-
-                    var readableFile = fs.ReadStream(data.filename);
-                    readableFile
-                        .on('open', function() {
-                            console.log("Opened file: " + data.filename);
-                        })
-
-                        .on('readable', function () {
-                            var chunk;
-                            var count = 0;
-                            while (null !== (chunk = readableFile.read())) {
-                                count++;
-                                console.log(count + " chunk size: " + chunk.length);
-                            }
-                        })
-
-                        .on('end', function () {
-                            console.log("Finished reading file");
-                        })
-
-                        .on('error', function(err) {
-                            console.log("Error opening file: " + err);
-                        });
 
                 });
 
