@@ -34,6 +34,7 @@ angular.module('node-teiler.list', [])
         //var fileInputDialogListener = setDialogListener('#fileInputDialog');
         //var fileSaveDialogListener = setDialogListener('#fileSaveDialog');
 
+        /*
         $scope.inputDialogChange = function() {
             console.log("CHANGE FOUND");
             //var val = $('#' + peer.name + 'fileInputDialog').val();
@@ -43,6 +44,7 @@ angular.module('node-teiler.list', [])
         $scope.fileNameChanged = function(scopen) {
             console.log("select file " + scopen.name);
         };
+        */
 
         $scope.clickSendButton = function(clickEvent, peer) {
 
@@ -60,7 +62,7 @@ angular.module('node-teiler.list', [])
             console.log("Clicked Download Button for " + file.name);
             console.log(clickEvent);
 
-            var fileName = fileSaveDialogListener.trigger('click');
+            $('#' + peer.name + 'fileSaveDialog').trigger('click');
             console.log("THIS IS THE FILE: " + fileName);
 
         };
@@ -83,11 +85,18 @@ angular.module('node-teiler.list', [])
 
         });
 
-        $scope.sendFile  = function(peer, file) {
-            console.log("BLAH " + peer.name);
+        $scope.offerFile  = function(peer) {
+            console.log("OFFERING TO " + peer.name);
 			var val = $("#" + peer.name + "fileInputDialog").val();
 			console.log("FILENAME VALUE IS " + val);
-            peer.socket.emit('file', { filename : val, peername : Peer.myPeer().name });
+            peer.socket.emit('offer file', { filename : val, peername : Peer.myPeer().name });
+        };
+
+        $scope.downloadFile  = function(peer, file) {
+            console.log("DOWNLOADING FROM " + peer.name);
+            //var val = $("#" + peer.name + "fileInputDialog").val();
+            console.log("FILENAME VALUE IS " + file.name);
+            peer.socket.emit('download file', { filename : file.name, peername : Peer.myPeer().name });
         }
 
     }])
@@ -95,7 +104,7 @@ angular.module('node-teiler.list', [])
         return {
             restrict: 'A',
             scope:{'onChange':'&' },
-            link: function(scope, elm, attrs) {
+            link: function(scope, elm) {
 
 				elm.bind('change', function() {
 
@@ -104,4 +113,4 @@ angular.module('node-teiler.list', [])
                 });
             }
         };
-    });;
+    });

@@ -47,14 +47,14 @@
         </div>
         <div ng-view></div>
         <div class="card" ng-repeat="peer in peers">
-            <input style="display:none;" id="{{ peer.name }}fileInputDialog" type="file" on-change="sendFile(peer)" />
-            <input style="display:none;" id="{{ peer.name }}fileSaveDialog" type="file" nwsaveas="filename.txt" />
+            <input style="display:none;" id="{{ peer.name }}fileInputDialog" type="file" on-change="offerFile(peer)" />
             <ul class="table-view">
                 <li class="table-view-cell">
                     <strong>{{ peer.name }}</strong>
                     <button class="btn btn-negative sendButton" ng-click="clickSendButton($event, peer)" >Send a File</button>
                 </li>
                 <li ng-repeat="file in peer.files" class="table-view-cell">
+                    <input style="display:none;" id="{{ peer.name }}fileSaveDialog" type="file" nwsaveas="filename.txt" on-change="downloadFile(peer, file)" />
                     {{ file.name }}
                     <button class="btn btn-positive" ng-click="clickDownloadButton($event, file, peer)" >Download File</button>
                 </li>
