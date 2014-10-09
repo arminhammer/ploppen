@@ -22,7 +22,7 @@ angular.module('node-teiler.filetransfer', [])
                 });
 
                 socket.on('offer file', function(data) {
-                    console.log("File received: " + data.filename);
+                    console.log("File offered: " + data.filename);
                     var peerList = PeerList.list();
                     peerList[data.peername].files.push({ name : data.filename });
                     $rootScope.$broadcast('update peers');
@@ -36,7 +36,7 @@ angular.module('node-teiler.filetransfer', [])
                 });
 
                 socket.on('disconnect', function () {
-                    socket.sockets.emit('user disconnected');
+                    socket.emit('user disconnected');
                 });
 
             });
