@@ -78,7 +78,8 @@ angular.module('node-teiler.peerdiscovery', [])
                 timestamp: Date.now(),
                 peer: {
                     name: Peer.myPeer().name,
-                    address: Peer.myPeer().address
+                    address: Peer.myPeer().address,
+                    port: Peer.myPeer().port
                 }
             };
             return new Buffer(JSON.stringify(body));
