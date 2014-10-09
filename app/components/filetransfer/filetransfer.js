@@ -50,7 +50,7 @@ angular.module('node-teiler.filetransfer', [])
 
                         .on('readable', function () {
                             var chunk;
-                            while (null !== (chunk = readableFile.read())) {
+                            while (null !== (chunk = readableFile.read(4096))) {
                                 console.log(chunk);
                             }
                         })
