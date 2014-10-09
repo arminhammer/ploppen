@@ -75,7 +75,7 @@ angular.module('node-teiler.filetransfer', [])
 
                     .on('file.download.data', function(data) {
 
-                        console.log("Received download end message: " + data);
+                        console.log("Received download data message: " + data);
                         Peer.myPeer().downloadingFiles[data.name].dlStream.write(data.chunk);
                         //console.log("Received download end message: " + data);
 
@@ -83,7 +83,7 @@ angular.module('node-teiler.filetransfer', [])
 
                     .on('file.download.end', function(data) {
 
-                        Peer.myPeer().downloadingFiles[data.name].dlStream.end();
+                        //Peer.myPeer().downloadingFiles[data.name].dlStream.end();
                         console.log("Server Received download end message: " + data);
 
                     })
