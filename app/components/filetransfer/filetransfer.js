@@ -7,6 +7,8 @@
 angular.module('node-teiler.filetransfer', [])
     .service('FileTransferServer', ['$rootScope', 'Config', 'PeerList', function($rootScope, Config, PeerList) {
 
+        var fs = require('fs');
+
         this.start = function(callback) {
 
             var server = require('http').createServer();
@@ -21,18 +23,24 @@ angular.module('node-teiler.filetransfer', [])
                     console.log('I received a private message by ', message.peer, ' saying ', message.message);
                 });
 
-                socket.on('offer file', function(data) {
+                socket.on('file.offer', function(data) {
                     console.log("File offered: " + data.filename);
                     var peerList = PeerList.list();
                     peerList[data.peername].files.push({ name : data.filename });
                     $rootScope.$broadcast('update peers');
                 });
 
-                socket.on('download file', function(data) {
+                socket.on('file.download', function(data) {
                     console.log("File to download: " + data.filename + " from " + data.peername);
-                    //var peerList = PeerList.list();
-                    //peerList[data.peername].files.push({ name : data.filename });
-                    //$rootScope.$broadcast('update peers');
+                    var readableFile = fs.ReadStream(data.filename);
+                    readableFile.on('open', function() {
+                        console.log("Opened file: " + data.filename);
+                    });
+
+                    readableFile.on('error', function(err) {
+                        console.log("Error opening file: " + err);
+                    });
+
                 });
 
                 socket.on('disconnect', function () {

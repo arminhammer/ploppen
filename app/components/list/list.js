@@ -88,14 +88,14 @@ angular.module('node-teiler.list', [])
             console.log("OFFERING TO " + peer.name);
 			var val = $("#" + peer.name + "fileInputDialog").val();
 			console.log("FILENAME VALUE IS " + val);
-            peer.socket.emit('offer file', { filename : val, peername : Peer.myPeer().name });
+            peer.socket.emit('file.offer', { filename : val, peername : Peer.myPeer().name });
         };
 
         $scope.downloadFile  = function(peer, file) {
             console.log("DOWNLOADING FROM " + peer.name);
-            //var val = $("#" + peer.name + "fileInputDialog").val();
-            console.log("FILENAME VALUE IS " + file.name);
-            peer.socket.emit('download file', { filename : file.name, peername : Peer.myPeer().name });
+            var val = $("#" + peer.name + "fileSaveDialog").val();
+            console.log("FILENAME VALUE IS " + file.name + " and download location is " + val);
+            peer.socket.emit('file.download', { filename : file.name, peername : Peer.myPeer().name });
         }
 
     }])
