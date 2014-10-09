@@ -39,20 +39,20 @@ angular.module('node-teiler.filetransfer', [])
                                 readableFile
                                     .on('open', function() {
                                         console.log("Opened file: " + data.filename + " to " + data.peername + " who is " + peerList[data.peername].name);
-                                        peerList[data.peername].socket.emit('file.download.start', { name: data.filename, size: fileSize });
+                                        peerList[data.peername].socket.emit('file.download.start', { filename: data.filename, filesize: fileSize });
                                     })
 
                                     .on('readable', function () {
                                         var chunk;
                                         while (null !== (chunk = readableFile.read())) {
                                             //console.log("chunk size: " + chunk.length);
-                                            peerList[data.peername].socket.emit('file.download.data', { name: data.filename, data: chunk });
+                                            peerList[data.peername].socket.emit('file.download.data', { filename: data.filename, filedata: chunk });
                                         }
                                     })
 
                                     .on('end', function () {
                                         console.log("Finished reading file");
-                                        peerList[data.peername].socket.emit('file.download.end', { name: data.filename });
+                                        peerList[data.peername].socket.emit('file.download.end', { filename: data.filename });
                                     })
 
                                     .on('error', function(err) {
@@ -67,16 +67,16 @@ angular.module('node-teiler.filetransfer', [])
                     .on('file.download.start', function(data) {
 
                         console.log("Server Received download start message: " + data);
-                        var dlLocation = Peer.myPeer().downloadingFiles[data.name].downloadLocation;
+                        var dlLocation = Peer.myPeer().downloadingFiles[data.filename].downloadLocation;
                         console.log("dlLocation is " + dlLocation);
-                        Peer.myPeer().downloadingFiles[data.name].dlStream = fs.createWriteStream(dlLocation);
+                        Peer.myPeer().downloadingFiles[data.filename].dlStream = fs.createWriteStream(dlLocation);
 
                     })
 
                     .on('file.download.data', function(data) {
 
-                        console.log("Received download data message: " + data.name + " " + data.chunk.length);
-                        Peer.myPeer().downloadingFiles[data.name].dlStream.write(data.chunk);
+                        console.log("Received download data message: " + data.filename + " " + data.filedata.length);
+                        Peer.myPeer().downloadingFiles[data.name].dlStream.write(data.filedata);
                         //console.log("Received download end message: " + data);
 
                     })
@@ -84,7 +84,7 @@ angular.module('node-teiler.filetransfer', [])
                     .on('file.download.end', function(data) {
 
                         //Peer.myPeer().downloadingFiles[data.name].dlStream.end();
-                        console.log("Server Received download end message: " + data);
+                        console.log("Server Received download end message: " + data.filename);
 
                     })
 
