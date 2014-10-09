@@ -178,29 +178,30 @@ angular.module('node-teiler', [
                 peers[peer.name].socket = ioc.connect('http://' + peer.address + ':' + peer.port);
                 console.log("Connecting to http://" + peer.address + ':' + peer.port);
 
-                peers[peer.name].socket.emit('private message', { peer: peer.name, message: "Hi World!"});
+                peers[peer.name].socket
 
-                peers[peer.name].socket.on('news', function (data) {
+                .on('file.download.start', function(data) {
 
-                    console.log(data);
-                    peers[peer.name].socket.emit('my other event', { my: 'data' });
-
-                });
-
-                peers[peer.name].socket.on('file.download.start', function(data) {
                     console.log("Received download start message: " + data);
-                });
 
-                peers[peer.name].socket.on('file.download.data', function(data) {
+                })
+
+                .on('file.download.data', function(data) {
+
                     //console.log("Received download end message: " + data);
-                });
 
-                peers[peer.name].socket.on('file.download.end', function(data) {
+                })
+
+                .on('file.download.end', function(data) {
+
                     console.log("Received download end message: " + data);
-                });
 
-                peers[peer.name].socket.on('disconnect', function() {
+                })
+
+                .on('disconnect', function() {
+
                     console.log(peer.name + " disconnected.");
+
                 });
 
                 peers[peer.name].files = [];
