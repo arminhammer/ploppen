@@ -44,7 +44,7 @@ angular.module('node-teiler.filetransfer', [])
 
                                     .on('readable', function () {
                                         var chunk;
-                                        while (null !== (chunk = readableFile.read(8192))) {
+                                        while (null !== (chunk = readableFile.read())) {
                                             //console.log("chunk size: " + chunk.length);
                                             peerList[data.peername].socket.emit('file.download.data', { filename: data.filename, filedata: chunk });
                                         }
@@ -71,11 +71,15 @@ angular.module('node-teiler.filetransfer', [])
                         console.log("dlLocation is " + dlLocation);
                         Peer.myPeer().downloadingFiles[data.filename].dlStream = fs.createWriteStream(dlLocation);
 
+                        Peer.myPeer().downloadingFiles[data.filename].dlStream.on('error', function(err) {
+                            console.log("Error with file: " + err);
+                        });
+
                     })
 
                     .on('file.download.data', function(data) {
 
-                        console.log("Received download data message: " + data.filename + " " + data.filedata.length);
+                        //console.log("Received download data message: " + data.filename + " " + data.filedata.length);
                         Peer.myPeer().downloadingFiles[data.filename].dlStream.write(data.filedata);
                         //console.log("Received download end message: " + data);
 
@@ -83,7 +87,7 @@ angular.module('node-teiler.filetransfer', [])
 
                     .on('file.download.end', function(data) {
 
-                        //Peer.myPeer().downloadingFiles[data.name].dlStream.end();
+                        Peer.myPeer().downloadingFiles[data.name].dlStream.end();
                         console.log("Server Received download end message: " + data.filename);
 
                     })
