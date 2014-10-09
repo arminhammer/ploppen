@@ -63,7 +63,7 @@ angular.module('node-teiler.list', [])
             console.log(clickEvent);
 
             $('#' + peer.name + 'fileSaveDialog').trigger('click');
-
+            console.log("Clicked on #" + peer.name + "fileSaveDialog");
         };
 
         PeerDiscoveryListener.start(function() {
