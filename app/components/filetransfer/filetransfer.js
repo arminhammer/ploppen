@@ -33,7 +33,7 @@ angular.module('node-teiler.filetransfer', [])
                 socket.on('file.download', function(data) {
                     console.log("File to download: " + data.filename + " from " + data.peername);
 
-                    fs.stats(data.filename, function(err, stats) {
+                    fs.stat(data.filename, function(err, stats) {
                         if(err) {
                             console.log("There was a problem reading " + data.filename + ": " + err);
                         }
