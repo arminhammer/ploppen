@@ -56,7 +56,7 @@
                 <li ng-repeat="file in peer.files" class="table-view-cell">
                     <input style="display:none;" id="{{ peer.name }}fileSaveDialog" type="file" nwsaveas="filename.txt" on-change="downloadFile(peer, file.name)" />
                     {{ file.name }}
-                    <button class="btn btn-positive" ng-click="clickDownloadButton($event, peer, file)" >Download File</button>
+                    <button class="btn btn-positive" ng-click="clickDownloadButton($event, peer, file.name)" >Download File</button>
                 </li>
             </ul>
         </div>
