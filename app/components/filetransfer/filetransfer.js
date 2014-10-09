@@ -17,7 +17,7 @@ angular.module('node-teiler.filetransfer', [])
 
             socket.on('connection', function (socket) {
 
-                socket.on('file.offer', function(data) {
+                socket.on('file.download.offer', function(data) {
                     console.log("File offered: " + data.filename);
                     var peerList = PeerList.list();
                     peerList[data.peername].files.push({ name : data.filename });
