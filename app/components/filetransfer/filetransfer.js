@@ -51,7 +51,7 @@ angular.module('node-teiler.filetransfer', [])
                                 .on('readable', function () {
                                     var chunk;
                                     while (null !== (chunk = readableFile.read())) {
-                                        console.log(count + " chunk size: " + chunk.length);
+                                        //console.log("chunk size: " + chunk.length);
                                         peerList[data.peername].socket.emit('file.download.data', { name: data.filename, data: chunk });
                                     }
                                 })
