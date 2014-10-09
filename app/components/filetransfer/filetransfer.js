@@ -5,7 +5,7 @@
 
 // Declare app level module which depends on views, and components
 angular.module('node-teiler.filetransfer', [])
-    .service('FileTransferServer', ['$rootScope', 'Config', 'PeerList', function($rootScope, Config, PeerList) {
+    .service('FileTransferServer', ['$rootScope', 'Config', 'PeerList', 'Peer', function($rootScope, Config, PeerList, Peer) {
 
         var fs = require('fs');
 
@@ -67,23 +67,29 @@ angular.module('node-teiler.filetransfer', [])
                     .on('file.download.start', function(data) {
 
                         console.log("Server Received download start message: " + data);
+                        var dlLocation = Peer.myPeer().downloadingFiles[data.name];
+                        Peer.myPeer().downloadingFiles[data.name].dlStream = fs.createWriteStream(dlLocation);
 
                     })
 
                     .on('file.download.data', function(data) {
 
+                        Peer.myPeer().downloadingFiles[data.name].dlStream.write(data.chunk);
                         //console.log("Received download end message: " + data);
 
                     })
 
                     .on('file.download.end', function(data) {
 
+                        Peer.myPeer().downloadingFiles[data.name].dlStream.end();
                         console.log("Server Received download end message: " + data);
 
                     })
 
                     .on('disconnect', function () {
+
                         socket.emit('user disconnected');
+
                     });
 
             });
