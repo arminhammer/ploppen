@@ -68,12 +68,14 @@ angular.module('node-teiler.filetransfer', [])
 
                         console.log("Server Received download start message: " + data);
                         var dlLocation = Peer.myPeer().downloadingFiles[data.name].downloadLocation;
+                        console.log("dlLocation is " + dlLocation);
                         Peer.myPeer().downloadingFiles[data.name].dlStream = fs.createWriteStream(dlLocation);
 
                     })
 
                     .on('file.download.data', function(data) {
 
+                        console.log("Received download end message: " + data);
                         Peer.myPeer().downloadingFiles[data.name].dlStream.write(data.chunk);
                         //console.log("Received download end message: " + data);
 
