@@ -76,7 +76,10 @@ angular.module('node-teiler.peerdiscovery', [])
         function genMessage() {
             var body = {
                 timestamp: Date.now(),
-                peer: Peer.myPeer()
+                peer: {
+                    name: Peer.myPeer().name,
+                    address: Peer.myPeer().address
+                }
             };
             return new Buffer(JSON.stringify(body));
         }
