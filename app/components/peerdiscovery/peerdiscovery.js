@@ -90,7 +90,7 @@ angular.module('node-teiler.peerdiscovery', [])
             client.send(messageJSON, 0, messageJSON.length, Config.multicastPort(), Config.multicastAddress(), function(err, bytes) {
 
                 if (err) throw err;
-                console.log("UDP message: " + messageJSON + " sent to " + Config.multicastAddress() +":"+ Config.multicastPort());
+                //console.log("UDP message: " + messageJSON + " sent to " + Config.multicastAddress() +":"+ Config.multicastPort());
                 client.close();
 
             })
@@ -99,7 +99,7 @@ angular.module('node-teiler.peerdiscovery', [])
 
         this.start = function(callback) {
 
-            setInterval(broadCastMessage, 3000);
+            setInterval(broadCastMessage, 5000);
 
             callback();
 

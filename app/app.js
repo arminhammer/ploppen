@@ -198,7 +198,7 @@ angular.module('node-teiler', [
             }
             else{
 
-                console.log(peer.name + " is already in the list!");
+                //console.log(peer.name + " is already in the list!");
 
             }
 
