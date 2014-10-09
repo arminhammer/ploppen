@@ -32,14 +32,36 @@ angular.module('node-teiler.filetransfer', [])
 
                 socket.on('file.download', function(data) {
                     console.log("File to download: " + data.filename + " from " + data.peername);
-                    var readableFile = fs.ReadStream(data.filename);
-                    readableFile.on('open', function() {
-                        console.log("Opened file: " + data.filename);
+
+                    fs.stats(data.filename, function(err, stats) {
+                        if(err) {
+                            console.log("There was a problem reading " + data.filename + ": " + err);
+                        }
+                        else {
+                            console.log(data.filename + " is size " + stats.size);
+                        }
                     });
 
-                    readableFile.on('error', function(err) {
-                        console.log("Error opening file: " + err);
-                    });
+                    var readableFile = fs.ReadStream(data.filename);
+                    readableFile
+                        .on('open', function() {
+                            console.log("Opened file: " + data.filename);
+                        })
+
+                        .on('readable', function () {
+                            var chunk;
+                            while (null !== (chunk = readStream.read())) {
+                                console.log(chunk);
+                            }
+                        })
+
+                        .on('end', function () {
+                            console.log("Finished reading file");
+                        })
+
+                        .on('error', function(err) {
+                            console.log("Error opening file: " + err);
+                        });
 
                 });
 
