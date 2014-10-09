@@ -60,7 +60,7 @@ angular.module('node-teiler.list', [])
         $scope.clickDownloadButton = function(clickEvent, peer, file) {
 
             console.log("Clicked Download Button for " + file.name);
-            console.log(clickEvent);
+            //console.log(clickEvent);
 
             $('#' + peer.name + 'fileSaveDialog').trigger('click');
             console.log("Clicked on #" + peer.name + "fileSaveDialog");
