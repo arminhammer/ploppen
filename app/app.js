@@ -91,6 +91,7 @@ angular.module('node-teiler', [
 
         var peers = {};
 
+        /*
         peers['localhost'] = {
             name : 'localhost',
             address: '127.0.0.1',
@@ -100,6 +101,7 @@ angular.module('node-teiler', [
                 { name : "File 2" }
             ]
         };
+        */
 
         this.list = function() {
 
