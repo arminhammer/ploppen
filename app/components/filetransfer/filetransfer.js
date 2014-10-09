@@ -75,7 +75,7 @@ angular.module('node-teiler.filetransfer', [])
 
                     .on('file.download.data', function(data) {
 
-                        console.log("Received download data message: " + data);
+                        console.log("Received download data message: " + data.name + " " + data.chunk.length);
                         Peer.myPeer().downloadingFiles[data.name].dlStream.write(data.chunk);
                         //console.log("Received download end message: " + data);
 
