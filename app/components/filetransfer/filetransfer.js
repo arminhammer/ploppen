@@ -38,6 +38,7 @@ angular.module('node-teiler.filetransfer', [])
                             console.log("There was a problem reading " + data.filename + ": " + err);
                         }
                         else {
+                            var peerList = PeerList.list();
                             var fileSize = stats.size;
                             console.log(data.filename + " is size " + fileSize);
                             var readableFile = fs.ReadStream(data.filename);
