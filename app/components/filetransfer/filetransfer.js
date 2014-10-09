@@ -21,11 +21,18 @@ angular.module('node-teiler.filetransfer', [])
                     console.log('I received a private message by ', message.peer, ' saying ', message.message);
                 });
 
-                socket.on('file', function(data) {
+                socket.on('offer file', function(data) {
                     console.log("File received: " + data.filename);
                     var peerList = PeerList.list();
                     peerList[data.peername].files.push({ name : data.filename });
                     $rootScope.$broadcast('update peers');
+                });
+
+                socket.on('download file', function(data) {
+                    console.log("File to download: " + data.filename + " from " + data.peername);
+                    //var peerList = PeerList.list();
+                    //peerList[data.peername].files.push({ name : data.filename });
+                    //$rootScope.$broadcast('update peers');
                 });
 
                 socket.on('disconnect', function () {
