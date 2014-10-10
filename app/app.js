@@ -93,8 +93,8 @@ angular.module('node-teiler', [
 
 		var peers = {};
 
-		peers['localhost'] = {
-			name : 'localhost',
+		peers['Peer1'] = {
+			name : 'Peer1',
 			address: '127.0.0.1',
 			port: 9996,
 			files : [

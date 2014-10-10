@@ -18,7 +18,7 @@ angular.module('node-teiler.peerdiscovery', [])
 
                 server.addMembership(Config.multicastAddress());
                 server.setBroadcast(true);
-                server.setMulticastTTL(5);
+                server.setMulticastTTL(10);
                 server.setMulticastLoopback(false);
 
             });
