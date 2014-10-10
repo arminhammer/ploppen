@@ -9,6 +9,7 @@ angular.module('node-teiler.peerdiscovery', [])
 
         var dgram = require('dgram');
         var server;
+		var bServer;
 
         this.start = function(callback) {
 
@@ -55,6 +56,49 @@ angular.module('node-teiler.peerdiscovery', [])
 
             });
 
+			bServer = dgram.createSocket('udp4');
+
+			bServer.bind(Config.multicastPort(), function() {
+
+				//server.addMembership(Config.multicastAddress());
+				//server.setBroadcast(true);
+				//server.setMulticastTTL(10);
+				//server.setMulticastLoopback(true);
+
+			});
+
+			bServer.on('listening', function () {
+
+				var address = bServer.address();
+				console.log('Peer Discovery Listener listening on ' + address.address + ":" + address.port);
+
+			});
+
+			bServer.on('message', function (messageJSON, remote) {
+
+				//console.log("MESSAGE: " + remote.address + ':' + remote.port +' - ' + messageJSON);
+
+				if(Peer.localAddr().indexOf(remote.address) < 0) {
+
+					var message = JSON.parse(messageJSON);
+					var peer = message.peer;
+					peer.address = remote.address;
+
+					PeerList.addPeer(peer, function (added) {
+
+						if (added) {
+							//console.log("Peer " + peer.name + " was added.");
+							$rootScope.$broadcast('peerList.update');
+						}
+						else {
+							//console.log("Peer " + peer + " was not added.");
+						}
+
+					});
+				}
+
+			});
+
             callback();
 
         };
@@ -63,6 +107,8 @@ angular.module('node-teiler.peerdiscovery', [])
 
             server.dropMembership(Config.multicastAddress());
             server.close();
+
+			bServer.close();
 
             callback();
 
