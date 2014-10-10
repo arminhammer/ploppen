@@ -40,18 +40,25 @@
 <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
 <div class="content">
     <div ng-controller="ListController">
-        <div class="card">
+        <div class="content-padded">
             <form>
                 <input class="textInput" type="text" ng-model="myPeer.name" ng-model-options="{ updateOn: 'blur' }" placeholder="My Computer">
             </form>
         </div>
         <div ng-view></div>
+        <div class="content-padded">
+            <h3>Files</h3>
+            <input style="display:none;" id="fileInputDialog" type="file" on-change="addFile()" />
+            <button class="btn btn-negative sendButton" ng-click="clickAddButton($event)" >Add File</button>
+        </div>
+        <div class="content-padded">
+            <h3">Peers</h3>
+        </div>
         <div class="card" ng-repeat="peer in peers">
-            <input style="display:none;" id="{{ peer.name }}fileInputDialog" type="file" on-change="offerFile(peer)" />
             <ul class="table-view">
                 <li class="table-view-cell">
                     <strong>{{ peer.name }}</strong>
-                    <button class="btn btn-negative sendButton" ng-click="clickSendButton($event, peer)" >Send a File</button>
+
                 </li>
                 <li ng-repeat="file in peer.files" class="table-view-cell">
                     <input style="display:none;" id="{{ peer.name }}fileSaveDialog" type="file" nwsaveas="{{ file.name }}" on-change="downloadFile(peer, file)" />

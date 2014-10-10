@@ -46,14 +46,14 @@ angular.module('node-teiler.list', [])
         };
         */
 
-        $scope.clickSendButton = function(clickEvent, peer) {
+        $scope.clickAddButton = function(clickEvent) {
 
             console.log("Clicked Send Button!");
             console.log(clickEvent);
 
             //fileInputDialogListener.trigger('click');
-            $('#' + peer.name + 'fileInputDialog').trigger('click');
-			console.log("Clicked on " + '#' + peer.name + 'fileInputDialog');
+            $('#fileInputDialog').trigger('click');
+			//console.log("Clicked on " + '#' + peer.name + 'fileInputDialog');
 
         };
 
@@ -84,12 +84,12 @@ angular.module('node-teiler.list', [])
 
         });
 
-        $scope.offerFile  = function(peer) {
+        $scope.addFile  = function() {
 
-            console.log("OFFERING TO " + peer.name);
-			var val = $("#" + peer.name + "fileInputDialog").val();
-			console.log("FILENAME VALUE IS " + val);
-            peer.socket.emit('file.download.offer', { filename : val, peername : Peer.myPeer().name });
+            //console.log("OFFERING TO " + peer.name);
+			var filename = $("#" + peer.name + "fileInputDialog").val();
+			console.log("FILENAME VALUE IS " + filename);
+            peer.socket.emit('file.download.offer', { filename : filename, peername : Peer.myPeer().name });
 
         };
 
