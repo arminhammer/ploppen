@@ -224,7 +224,7 @@ angular.module('node-teiler', [
 	}])
 	.service('Config', [function() {
 
-		var multicastAddress = '224.0.0.114';
+		var multicastAddress = '224.3.3.100';
 		var multicastPort = 8886;
 
 		var fileTransferPort = 9996;
