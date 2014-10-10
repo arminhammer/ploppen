@@ -56,7 +56,7 @@ angular.module('node-teiler.peerdiscovery', [])
 
             });
 
-			/*
+
 			bServer = dgram.createSocket('udp4');
 
 			bServer.bind(Config.multicastPort(), function() {
@@ -99,7 +99,7 @@ angular.module('node-teiler.peerdiscovery', [])
 				}
 
 			});
-			*/
+
 
             callback();
 
@@ -138,8 +138,9 @@ angular.module('node-teiler.peerdiscovery', [])
 			var messageJSON = genMessage();
 
             var client = dgram.createSocket('udp4');
-
-			client.bind();
+			var localAddress = Peer.ipAddress();
+			console.log(localAddress);
+			client.bind(localAddress);
 			client.on("listening", function () {
 				client.setBroadcast(true);
 				client.send(messageJSON, 0, messageJSON.length, Config.multicastPort(), address, function (err, bytes) {
@@ -157,7 +158,7 @@ angular.module('node-teiler.peerdiscovery', [])
 
             setInterval(function(){broadCastMessage(Config.multicastAddress())}, 5000);
 
-			setInterval(function(){broadCastMessage(Peer.broadcastAddr())}, 11000);
+			setInterval(function(){broadCastMessage(Peer.broadcastAddr())}, 6000);
 
             callback();
 
