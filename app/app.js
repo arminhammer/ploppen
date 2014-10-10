@@ -53,6 +53,11 @@ angular.module('node-teiler', [
 			return getLocalAddr();
 		};
 
+		this.broadcastAddr = function() {
+			var lAddr = getIPAddress();
+			return lAddr.substr(0, lAddr.indexOf('.')) + '.255.255.255';
+		};
+
 		this.myPeer = function() {
 
 			return myPeer;

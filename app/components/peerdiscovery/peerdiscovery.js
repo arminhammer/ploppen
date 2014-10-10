@@ -85,16 +85,16 @@ angular.module('node-teiler.peerdiscovery', [])
             return new Buffer(JSON.stringify(body));
         }
 
-        function broadCastMessage() {
+        function broadCastMessage(address) {
 
             var client = dgram.createSocket('udp4');
 
             var messageJSON = genMessage();
 
-            client.send(messageJSON, 0, messageJSON.length, Config.multicastPort(), Config.multicastAddress(), function(err, bytes) {
+            client.send(messageJSON, 0, messageJSON.length, Config.multicastPort(), address, function(err, bytes) {
 
                 if (err) throw err;
-                //console.log("UDP message: " + messageJSON + " sent to " + Config.multicastAddress() +":"+ Config.multicastPort());
+                console.log("UDP message: " + messageJSON + " sent to " + address +":"+ Config.multicastPort());
                 client.close();
 
             })
@@ -103,7 +103,9 @@ angular.module('node-teiler.peerdiscovery', [])
 
         this.start = function(callback) {
 
-            setInterval(broadCastMessage, 5000);
+            setInterval(function(){broadCastMessage(Config.multicastAddress())}, 5000);
+
+			setInterval(function(){broadCastMessage(Peer.broadcastAddr())}, 10000);
 
             callback();
 
