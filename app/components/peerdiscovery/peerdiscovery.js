@@ -33,7 +33,7 @@ angular.module('node-teiler.peerdiscovery', [])
 
             server.on('message', function (messageJSON, remote) {
 
-                //console.log("MESSAGE: " + remote.address + ':' + remote.port +' - ' + messageJSON);
+                console.log("MULTI MESSAGE: " + remote.address + ':' + remote.port +' - ' + messageJSON);
 
                 if(Peer.localAddr().indexOf(remote.address) < 0) {
 
@@ -44,11 +44,11 @@ angular.module('node-teiler.peerdiscovery', [])
                     PeerList.addPeer(peer, function (added) {
 
                         if (added) {
-                            //console.log("Peer " + peer.name + " was added.");
+                            console.log("Peer " + peer.name + " was added.");
                             $rootScope.$broadcast('peerList.update');
                         }
                         else {
-                            //console.log("Peer " + peer + " was not added.");
+                            console.log("Peer " + peer + " was not added.");
                         }
 
                     });
@@ -61,7 +61,7 @@ angular.module('node-teiler.peerdiscovery', [])
 			bServer.bind(Config.multicastPort(), function() {
 
 				//server.addMembership(Config.multicastAddress());
-				//server.setBroadcast(true);
+				bServer.setBroadcast(true);
 				//server.setMulticastTTL(10);
 				//server.setMulticastLoopback(true);
 
@@ -76,7 +76,7 @@ angular.module('node-teiler.peerdiscovery', [])
 
 			bServer.on('message', function (messageJSON, remote) {
 
-				//console.log("MESSAGE: " + remote.address + ':' + remote.port +' - ' + messageJSON);
+				console.log("BROADCAST MESSAGE: " + remote.address + ':' + remote.port +' - ' + messageJSON);
 
 				if(Peer.localAddr().indexOf(remote.address) < 0) {
 
@@ -87,11 +87,11 @@ angular.module('node-teiler.peerdiscovery', [])
 					PeerList.addPeer(peer, function (added) {
 
 						if (added) {
-							//console.log("Peer " + peer.name + " was added.");
+							console.log("Peer " + peer.name + " was added.");
 							$rootScope.$broadcast('peerList.update');
 						}
 						else {
-							//console.log("Peer " + peer + " was not added.");
+							console.log("Peer " + peer + " was not added.");
 						}
 
 					});
