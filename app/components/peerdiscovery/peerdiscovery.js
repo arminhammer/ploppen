@@ -44,7 +44,7 @@ angular.module('node-teiler.peerdiscovery', [])
 
                         if (added) {
                             //console.log("Peer " + peer.name + " was added.");
-                            $rootScope.$broadcast('update peers');
+                            $rootScope.$broadcast('peerList.update');
                         }
                         else {
                             //console.log("Peer " + peer + " was not added.");

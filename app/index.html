@@ -49,7 +49,14 @@
         <div class="content-padded">
             <h3>Files</h3>
             <input style="display:none;" id="fileInputDialog" type="file" on-change="addFile()" />
-            <button class="btn btn-negative sendButton" ng-click="clickAddButton($event)" >Add File</button>
+            <button class="btn btn-negative addButton" ng-click="clickAddButton($event)" >Add File</button>
+        </div>
+        <div class="card">
+            <ul class="table-view">
+                <li class="table-view-cell" ng-repeat="file in myPeer.availableFiles">
+                    {{file.filename }}
+                </li>
+            </ul>
         </div>
         <div class="content-padded">
             <h3">Peers</h3>

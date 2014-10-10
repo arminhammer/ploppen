@@ -8,48 +8,16 @@ angular.module('node-teiler.list', [])
 
         $scope.peers = PeerList.list();
 
-        $scope.$on('update peers', function() {
+        $scope.$on('peerList.update', function() {
 
             $scope.$apply();
 
         });
 
-		/*
-        function setDialogListener(name) {
-
-            var inputListener = $('#' + name + 'fileInputDialog');
-            var saveListener = $('#' + name + 'fileSaveDialog');
-
-            inputListener.change(function(evt) {
-
-                var filePath = $(this).val();
-                console.log("OFFER: " + name + " file " + filePath);
-                //return $(this).val();
-
-            });
-
-        }
-		*/
-
-        //var fileInputDialogListener = setDialogListener('#fileInputDialog');
-        //var fileSaveDialogListener = setDialogListener('#fileSaveDialog');
-
-        /*
-        $scope.inputDialogChange = function() {
-            console.log("CHANGE FOUND");
-            //var val = $('#' + peer.name + 'fileInputDialog').val();
-            //console.log("VAL: " + val);
-        };
-
-        $scope.fileNameChanged = function(scopen) {
-            console.log("select file " + scopen.name);
-        };
-        */
-
         $scope.clickAddButton = function(clickEvent) {
 
             console.log("Clicked Send Button!");
-            console.log(clickEvent);
+            //console.log(clickEvent);
 
             //fileInputDialogListener.trigger('click');
             $('#fileInputDialog').trigger('click');
@@ -84,13 +52,25 @@ angular.module('node-teiler.list', [])
 
         });
 
-        $scope.addFile  = function() {
+        $scope.addFile = function() {
 
-            //console.log("OFFERING TO " + peer.name);
-			var filename = $("#" + peer.name + "fileInputDialog").val();
+			var filename = $("#fileInputDialog").val();
 			console.log("FILENAME VALUE IS " + filename);
-            peer.socket.emit('file.download.offer', { filename : filename, peername : Peer.myPeer().name });
 
+			console.log(Peer.myPeer().availableFiles);
+
+			if(Peer.myPeer().availableFiles[filename] == null) {
+
+				Peer.myPeer().availableFiles[filename] = {
+
+					filename: filename
+
+				};
+
+				$scope.$apply();
+			}
+
+			console.log(Peer.myPeer().availableFiles);
         };
 
         $scope.downloadFile  = function(peer, file) {

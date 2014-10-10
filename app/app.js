@@ -17,7 +17,8 @@ angular.module('node-teiler', [
 			name: os.hostname(),
 			address: getIPAddress(),
 			port: Config.fileTransferPort(),
-			downloadingFiles: {}
+			downloadingFiles: {},
+			availableFiles: {}
 
 		};
 

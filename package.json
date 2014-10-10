@@ -64,7 +64,7 @@
     "title": "node-webkit demo",
     "icon": "link.png",
     "toolbar": true,
-    "frame": false,
+    "frame": true,
     "width": 400,
     "height": 700
   },
