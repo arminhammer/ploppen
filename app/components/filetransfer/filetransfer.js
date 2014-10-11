@@ -90,15 +90,17 @@ angular.module('node-teiler.filetransfer', [])
 
                     .on('file.download.end', function(data) {
 
-                        Peer.myPeer().downloadingFiles[data.name].dlStream.end();
+                        Peer.myPeer().downloadingFiles[data.filename].dlStream.end();
                         console.log("Server Received download end message: " + data.filename);
 
                     })
 
+                    /*
                     .on('filelist.update', function(data) {
                         PeerList.list()[data.peername].files = data.filelist;
                         console.log("Server Received filelistupdate: " + data.peername + " " + data.filelist);
                     })
+                    */
 
                     .on('disconnect', function () {
 
