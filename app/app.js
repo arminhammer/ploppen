@@ -1,10 +1,10 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('node-teiler', [
-    'node-teiler.list',
-    'node-teiler.peerdiscovery',
-    'node-teiler.filetransfer'
+angular.module('ploppen', [
+    'ploppen.list',
+    'ploppen.peerdiscovery',
+    'ploppen.filetransfer'
 
 ])
     .service('Peer', ['Config', function(Config) {

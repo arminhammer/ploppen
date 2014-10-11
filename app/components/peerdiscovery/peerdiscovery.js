@@ -4,7 +4,7 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('node-teiler.peerdiscovery', [])
+angular.module('ploppen.peerdiscovery', [])
     .service('PeerDiscoveryListener', ['$rootScope', 'Peer', 'Config', 'PeerList', function($rootScope, Peer, Config, PeerList) {
 
         var dgram = require('dgram');

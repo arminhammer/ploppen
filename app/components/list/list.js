@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('node-teiler.list', [])
+angular.module('ploppen.list', [])
 
     .controller('ListController', ['$scope', 'PeerList', 'Peer', 'PeerDiscoveryBroadcaster', 'PeerDiscoveryListener', 'FileTransferServer', function($scope, PeerList, Peer, PeerDiscoveryBroadcaster, PeerDiscoveryListener, FileTransferServer) {
 

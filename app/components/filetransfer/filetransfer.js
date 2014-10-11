@@ -4,7 +4,7 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('node-teiler.filetransfer', [])
+angular.module('ploppen.filetransfer', [])
     .service('FileTransferServer', ['$rootScope', 'Config', 'PeerList', 'Peer', function($rootScope, Config, PeerList, Peer) {
 
         var fs = require('fs');
