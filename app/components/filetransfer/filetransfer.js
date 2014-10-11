@@ -97,6 +97,7 @@ angular.module('node-teiler.filetransfer', [])
 
                     .on('filelist.update', function(data) {
                         PeerList.list()[data.peername].files = data.filelist;
+                        console.log("Received filelistupdate: " + data.peername + " " + data.filelist);
                     })
 
                     .on('disconnect', function () {
@@ -113,6 +114,7 @@ angular.module('node-teiler.filetransfer', [])
 
         this.updateFileList = function() {
             socket.emit('filelist.update', { peername : Peer.myPeer().name, filelist: Peer.myPeer().availableFiles });
+            console.log("Updating fileList: " + Peer.myPeer().availableFiles);
         };
 
     }]);

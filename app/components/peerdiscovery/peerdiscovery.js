@@ -48,7 +48,7 @@ angular.module('node-teiler.peerdiscovery', [])
                             $rootScope.$broadcast('peerList.update');
                         }
                         else {
-                            console.log("Peer " + peer + " was not added.");
+                            //console.log("Peer " + peer + " was not added.");
                         }
 
                     });
