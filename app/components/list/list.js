@@ -88,6 +88,12 @@ angular.module('node-teiler.list', [])
             var socketStream = require('socket.io-stream');
             var fs = require('fs');
             var stream = socketStream.createStream();
+            stream.on('data', function(chunk) {
+                console.log("Data downloaded: " + chunk.length);
+            });
+            stream.on('end', function() {
+               console.log("Download finished");
+            });
             socketStream(peer.socket).emit('file.download.request', stream, { filename : file.filename, peername : Peer.myPeer().name });
             stream.pipe(fs.createWriteStream(downloadLocation));
         }
