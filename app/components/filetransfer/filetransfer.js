@@ -152,7 +152,7 @@ angular.module('node-teiler.filetransfer', [])
         };
 
         this.updateFileList = function() {
-            socket.emit('filelist.update', { peername : Peer.myPeer().name, filelist: Peer.myPeer().availableFiles });
+            io.emit('filelist.update', { peername : Peer.myPeer().name, filelist: Peer.myPeer().availableFiles });
             console.log("Updating fileList: " + Peer.myPeer().availableFiles);
         };
 
