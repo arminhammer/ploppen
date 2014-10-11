@@ -80,11 +80,11 @@ angular.module('node-teiler.list', [])
             console.log("DOWNLOADING FROM " + peer.name);
             var downloadLocation = $("#" + peer.name + "fileSaveDialog").val();
             console.log("FILENAME VALUE IS " + file.name + " and download location is " + downloadLocation);
-            Peer.myPeer().downloadingFiles[file.name] = {
-                filename: file.name,
+            Peer.myPeer().downloadingFiles[file.filename] = {
+                filename: file.filename,
                 downloadLocation: downloadLocation
             };
-            peer.socket.emit('file.download.request', { filename : file.name, peername : Peer.myPeer().name });
+            peer.socket.emit('file.download.request', { filename : file.filename, peername : Peer.myPeer().name });
 
         }
 
