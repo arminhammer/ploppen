@@ -51,7 +51,17 @@ angular.module('node-teiler.filetransfer', [])
                             console.log("Starting file stream...");
 
                             //var fileStream = socketStream.createStream();
-                            fs.createReadStream(data.filename).pipe(stream);
+                            var readStream = fs.createReadStream(data.filename);
+
+                            readStream.pipe(stream);
+
+                            readStream.on('data', function(chunk) {
+                                console.log("Reading chunk size " + chunk.length);
+                            });
+
+                            readStream.on('end', function() {
+                                console.log("Finished sending file");
+                            });
 
                             //socketStream(socket).emit('file.download.data', fileStream, { filename: data.filename, filesize: fileSize });
 
