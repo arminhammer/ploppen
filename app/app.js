@@ -207,7 +207,12 @@ angular.module('node-teiler', [
 
 					})
 
-					.on('disconnect', function() {
+                    .on('filelist.update', function(data) {
+                        peers[data.peername].files = data.filelist;
+                        console.log("Client Received filelistupdate: " + data.peername + " " + data.filelist);
+                    })
+
+                    .on('disconnect', function() {
 
 						console.log(peer.name + " disconnected.");
 
