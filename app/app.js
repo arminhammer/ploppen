@@ -210,7 +210,7 @@ angular.module('node-teiler', [
 					})
 
                     .on('filelist.update', function(data) {
-                        peers[data.peername].files = data.filelist;
+                        peers[data.peername].availableFiles = data.filelist;
                         console.log("Client Received filelistupdate: " + data.peername + " " + data.filelist);
                         $rootScope.$broadcast('peerList.update');
                     })
