@@ -47,17 +47,17 @@ angular.module('node-teiler.filetransfer', [])
                                 socketStream(socket).emit('file.download.data', stream, { filename: data.filename, filesize: fileSize });
 
                                 /*
-                                var blobStream = socketStream.createBlobReadStream(data.filename);
-                                var size = 0;
+                                 var blobStream = socketStream.createBlobReadStream(data.filename);
+                                 var size = 0;
 
-                                blobStream.on('data', function(chunk) {
-                                    size += chunk.length;
-                                    console.log(Math.floor(size / file.size * 100) + '%');
-                                    // -> e.g. '42%'
-                                });
+                                 blobStream.on('data', function(chunk) {
+                                 size += chunk.length;
+                                 console.log(Math.floor(size / file.size * 100) + '%');
+                                 // -> e.g. '42%'
+                                 });
 
-                                blobStream.pipe(stream);
-                                */
+                                 blobStream.pipe(stream);
+                                 */
 
                                 fs.createReadStream(data.filename).pipe(stream);
 
@@ -133,21 +133,21 @@ angular.module('node-teiler.filetransfer', [])
 
                      */
 
-                    socketStream(socket).on('file.download.data', function(stream, data) {
-
-                        console.log("Received download data message: " + data.filename + " " + data.filedata.length);
-
-                        fs.createWriteStream(Peer.myPeer().downloadingFiles[data.filename].downloadLocation).pipe(stream);
-
-                        console.log("Received download end message: " + data);
-
-                    })
-
                     .on('disconnect', function () {
 
                         socket.emit('user disconnected');
 
                     });
+
+                socketStream(socket).on('file.download.data', function(stream, data) {
+
+                    console.log("Received download data message: " + data.filename);
+
+                    fs.createWriteStream(Peer.myPeer().downloadingFiles[data.filename].downloadLocation).pipe(stream);
+
+                    //console.log("Received download end message: " + data);
+
+                })
 
             });
 
