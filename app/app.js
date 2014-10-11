@@ -7,7 +7,7 @@ angular.module('node-teiler', [
 	'node-teiler.filetransfer'
 
 ])
-	.service('Peer', ['Config', function(Config) {
+	.service('Peer', ['$rootScope', 'Config', function($rootScope, Config) {
 
 		var os = require('os');
 		var dns = require('dns');
@@ -102,15 +102,17 @@ angular.module('node-teiler', [
 
 		var peers = {};
 
+        /*
 		peers['Peer1'] = {
 			name : 'Peer1',
 			address: '127.0.0.1',
 			port: 9996,
-			files : [
-				{ name : "File 1" },
-				{ name : "File 2" }
+			availableFiles : [
+				{ filename : "File 1" },
+				{ filename : "File 2" }
 			]
 		};
+        */
 
 		this.list = function() {
 
@@ -210,6 +212,7 @@ angular.module('node-teiler', [
                     .on('filelist.update', function(data) {
                         peers[data.peername].files = data.filelist;
                         console.log("Client Received filelistupdate: " + data.peername + " " + data.filelist);
+                        $rootScope.$broadcast('peerList.update');
                     })
 
                     .on('disconnect', function() {

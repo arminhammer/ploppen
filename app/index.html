@@ -54,7 +54,7 @@
         <div class="card">
             <ul class="table-view">
                 <li class="table-view-cell" ng-repeat="file in myPeer.availableFiles">
-                    {{file.filename }}
+                    {{ file.filename }}
                 </li>
             </ul>
         </div>
@@ -67,8 +67,8 @@
                     <strong>{{ peer.name }}</strong>
 
                 </li>
-                <li ng-repeat="file in peer.files" class="table-view-cell">
-                    <input style="display:none;" id="{{ peer.name }}fileSaveDialog" type="file" nwsaveas="{{ file.name }}" on-change="downloadFile(peer, file)" />
+                <li ng-repeat="file in peer.availableFiles" class="table-view-cell">
+                    <input style="display:none;" id="{{ peer.name }}fileSaveDialog" type="file" nwsaveas="{{ file.filename }}" on-change="downloadFile(peer, file)" />
                     {{ file.name }}
                     <button class="btn btn-positive" ng-click="clickDownloadButton($event, peer, file)" >Download File</button>
                 </li>
