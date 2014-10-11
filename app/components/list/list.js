@@ -84,7 +84,10 @@ angular.module('node-teiler.list', [])
                 filename: file.filename,
                 downloadLocation: downloadLocation
             };
-            peer.socket.emit('file.download.request', { filename : file.filename, peername : Peer.myPeer().name });
+
+            var socketStream = require('socket.io-stream');
+
+            socketStream(peer.socket).emit('file.download.request', stream, { filename : file.filename, peername : Peer.myPeer().name });
 
         }
 
