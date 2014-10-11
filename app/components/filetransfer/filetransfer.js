@@ -64,84 +64,83 @@ angular.module('node-teiler.filetransfer', [])
                             }
                         });
                     })
-                    /*
-                     .on('file.download.request', function(data) {
-                     console.log("File to download: " + data.filename + " from " + data.peername);
-
-                     fs.stat(data.filename, function(err, stats) {
-                     if(err) {
-                     console.log("There was a problem reading " + data.filename + ": " + err);
-                     }
-                     else {
-                     var peerList = PeerList.list();
-                     var fileSize = stats.size;
-                     console.log(data.filename + " is size " + fileSize);
-
-                     var readableFile = fs.ReadStream(data.filename);
-                     readableFile
-                     .on('open', function() {
-                     console.log("Opened file: " + data.filename + " to " + data.peername + " who is " + peerList[data.peername].name);
-                     peerList[data.peername].socket.emit('file.download.start', { filename: data.filename, filesize: fileSize });
-                     })
-
-                     .on('readable', function () {
-                     var chunk;
-                     while (null !== (chunk = readableFile.read(1048576))) {
-                     console.log("chunk size: " + chunk.length);
-                     peerList[data.peername].socket.emit('file.download.data', { filename: data.filename, filedata: chunk });
-                     }
-                     })
-
-                     .on('end', function () {
-                     console.log("Finished reading file");
-                     peerList[data.peername].socket.emit('file.download.end', { filename: data.filename });
-                     })
-
-                     .on('error', function(err) {
-                     console.log("Error opening file: " + err);
-                     });
-
-                     }
-                     });
-
-                     })
-
-
-                     .on('file.download.start', function(data) {
-
-                     console.log("Server Received download start message: " + data);
-                     var dlLocation = Peer.myPeer().downloadingFiles[data.filename].downloadLocation;
-                     console.log("dlLocation is " + dlLocation);
-                     Peer.myPeer().downloadingFiles[data.filename].dlStream = fs.createWriteStream(dlLocation);
-
-
-                     })
-                     .on('file.download.data', function(data) {
-
-                     //console.log("Received download data message: " + data.filename + " " + data.filedata.length);
-                     Peer.myPeer().downloadingFiles[data.filename].dlStream.write(data.filedata);
-                     //console.log("Received download end message: " + data);
-
-                     })
-
-                     .on('file.download.end', function(data) {
-
-                     Peer.myPeer().downloadingFiles[data.filename].dlStream.end();
-                     console.log("Server Received download end message: " + data.filename);
-
-                     })
-
-                     */
-
                     .on('disconnect', function () {
 
                         socket.emit('user disconnected');
 
                     });
+                /*
+                 .on('file.download.request', function(data) {
+                 console.log("File to download: " + data.filename + " from " + data.peername);
+
+                 fs.stat(data.filename, function(err, stats) {
+                 if(err) {
+                 console.log("There was a problem reading " + data.filename + ": " + err);
+                 }
+                 else {
+                 var peerList = PeerList.list();
+                 var fileSize = stats.size;
+                 console.log(data.filename + " is size " + fileSize);
+
+                 var readableFile = fs.ReadStream(data.filename);
+                 readableFile
+                 .on('open', function() {
+                 console.log("Opened file: " + data.filename + " to " + data.peername + " who is " + peerList[data.peername].name);
+                 peerList[data.peername].socket.emit('file.download.start', { filename: data.filename, filesize: fileSize });
+                 })
+
+                 .on('readable', function () {
+                 var chunk;
+                 while (null !== (chunk = readableFile.read(1048576))) {
+                 console.log("chunk size: " + chunk.length);
+                 peerList[data.peername].socket.emit('file.download.data', { filename: data.filename, filedata: chunk });
+                 }
+                 })
+
+                 .on('end', function () {
+                 console.log("Finished reading file");
+                 peerList[data.peername].socket.emit('file.download.end', { filename: data.filename });
+                 })
+
+                 .on('error', function(err) {
+                 console.log("Error opening file: " + err);
+                 });
+
+                 }
+                 });
+
+                 })
+
+
+                 .on('file.download.start', function(data) {
+
+                 console.log("Server Received download start message: " + data);
+                 var dlLocation = Peer.myPeer().downloadingFiles[data.filename].downloadLocation;
+                 console.log("dlLocation is " + dlLocation);
+                 Peer.myPeer().downloadingFiles[data.filename].dlStream = fs.createWriteStream(dlLocation);
+
+
+                 })
+                 .on('file.download.data', function(data) {
+
+                 //console.log("Received download data message: " + data.filename + " " + data.filedata.length);
+                 Peer.myPeer().downloadingFiles[data.filename].dlStream.write(data.filedata);
+                 //console.log("Received download end message: " + data);
+
+                 })
+
+                 .on('file.download.end', function(data) {
+
+                 Peer.myPeer().downloadingFiles[data.filename].dlStream.end();
+                 console.log("Server Received download end message: " + data.filename);
+
+                 })
+
+                 */
 
                 socketStream(socket).on('file.download.data', function(stream, data) {
 
-                    console.log("Received download data message: " + data.filename);
+                    console.log("Server Received download data message: " + data.filename);
 
                     fs.createWriteStream(Peer.myPeer().downloadingFiles[data.filename].downloadLocation).pipe(stream);
 
