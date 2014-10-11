@@ -95,7 +95,11 @@ angular.module('node-teiler.list', [])
                console.log("Download finished");
             });
             socketStream(peer.socket).emit('file.download.request', stream, { filename : file.filename, peername : Peer.myPeer().name });
-            stream.pipe(fs.createWriteStream(downloadLocation));
+            var dlStream = fs.createWriteStream(downloadLocation);
+            dlStream.on('drain', function() {
+                console.log("Written " + dlStream.bytesWritten);
+            });
+            stream.pipe(dlStream);
         }
 
     }])
