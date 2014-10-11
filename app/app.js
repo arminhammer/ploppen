@@ -7,7 +7,7 @@ angular.module('node-teiler', [
 	'node-teiler.filetransfer'
 
 ])
-	.service('Peer', ['$rootScope', 'Config', function($rootScope, Config) {
+	.service('Peer', ['Config', function(Config) {
 
 		var os = require('os');
 		var dns = require('dns');
@@ -96,7 +96,7 @@ angular.module('node-teiler', [
 
 	}])
 
-	.service('PeerList', [function() {
+	.service('PeerList', ['$rootScope', function($rootScope) {
 
 		var ioc = require('socket.io-client');
 
