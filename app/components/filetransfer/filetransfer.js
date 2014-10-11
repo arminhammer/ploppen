@@ -39,11 +39,6 @@ angular.module('node-teiler.filetransfer', [])
                                 var fileSize = stats.size;
                                 console.log(data.filename + " is size " + fileSize);
 
-                                fs.readFile(data.filename, function(err, buffer) {
-                                    console.log("Read file, buffer: " + buffer);
-                                });
-
-                                /*
                                 var readableFile = fs.ReadStream(data.filename);
                                 readableFile
                                     .on('open', function() {
@@ -53,7 +48,7 @@ angular.module('node-teiler.filetransfer', [])
 
                                     .on('readable', function () {
                                         var chunk;
-                                        while (null !== (chunk = readableFile.read())) {
+                                        while (null !== (chunk = readableFile.read(8192))) {
                                             console.log("chunk size: " + chunk.length);
                                             peerList[data.peername].socket.emit('file.download.data', { filename: data.filename, filedata: chunk });
                                         }
@@ -67,7 +62,7 @@ angular.module('node-teiler.filetransfer', [])
                                     .on('error', function(err) {
                                         console.log("Error opening file: " + err);
                                     });
-                                */
+
                             }
                         });
 
