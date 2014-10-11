@@ -22,53 +22,57 @@ angular.module('node-teiler.filetransfer', [])
 
             io.on('connection', function (socket) {
 
-                socket.on('file.download.offer', function(data) {
-                    console.log("File offered: " + data.filename);
-                    var peerList = PeerList.list();
-                    peerList[data.peername].files.push({ name : data.filename });
-                    $rootScope.$broadcast('update peers');
-                })
-
-                    .on('file.download.request', function(data) {
-                        fs.stat(data.filename, function(err, stats) {
-                            if(err) {
-                                console.log("There was a problem reading " + data.filename + ": " + err);
-                            }
-                            else {
-                                console.log("Starting file stream...");
-                                var peerList = PeerList.list();
-                                var fileSize = stats.size;
-                                console.log(data.filename + " is size " + fileSize);
-
-                                console.log("Starting file stream...");
-
-                                var stream = socketStream.createStream();
-
-                                socketStream(socket).emit('file.download.data', stream, { filename: data.filename, filesize: fileSize });
-
-                                /*
-                                 var blobStream = socketStream.createBlobReadStream(data.filename);
-                                 var size = 0;
-
-                                 blobStream.on('data', function(chunk) {
-                                 size += chunk.length;
-                                 console.log(Math.floor(size / file.size * 100) + '%');
-                                 // -> e.g. '42%'
-                                 });
-
-                                 blobStream.pipe(stream);
-                                 */
-
-                                fs.createReadStream(data.filename).pipe(stream);
-
-                            }
-                        });
+                socket
+                    .on('file.download.offer', function(data) {
+                        console.log("File offered: " + data.filename);
+                        var peerList = PeerList.list();
+                        peerList[data.peername].files.push({ name : data.filename });
+                        $rootScope.$broadcast('update peers');
                     })
+
+
                     .on('disconnect', function () {
 
                         socket.emit('user disconnected');
 
                     });
+
+                socketStream(socket).on('file.download.request', function(stream, data) {
+                    fs.stat(data.filename, function(err, stats) {
+                        if(err) {
+                            console.log("There was a problem reading " + data.filename + ": " + err);
+                        }
+                        else {
+                            console.log("Starting file stream...");
+                            var peerList = PeerList.list();
+                            var fileSize = stats.size;
+                            console.log(data.filename + " is size " + fileSize);
+
+                            console.log("Starting file stream...");
+
+                            //var stream = socketStream.createStream();
+
+                            socketStream(socket).emit('file.download.data', stream, { filename: data.filename, filesize: fileSize });
+
+                            /*
+                             var blobStream = socketStream.createBlobReadStream(data.filename);
+                             var size = 0;
+
+                             blobStream.on('data', function(chunk) {
+                             size += chunk.length;
+                             console.log(Math.floor(size / file.size * 100) + '%');
+                             // -> e.g. '42%'
+                             });
+
+                             blobStream.pipe(stream);
+                             */
+
+                            fs.createReadStream(data.filename).pipe(stream);
+
+                        }
+                    });
+                });
+
                 /*
                  .on('file.download.request', function(data) {
                  console.log("File to download: " + data.filename + " from " + data.peername);
@@ -138,15 +142,18 @@ angular.module('node-teiler.filetransfer', [])
 
                  */
 
-                socketStream(socket).on('file.download.data', function(stream, data) {
 
-                    console.log("Server Received download data message: " + data.filename);
+                /*
+                 socketStream(socket).on('file.download.data', function(stream, data) {
 
-                    fs.createWriteStream(Peer.myPeer().downloadingFiles[data.filename].downloadLocation).pipe(stream);
+                 console.log("Server Received download data message: " + data.filename);
 
-                    //console.log("Received download end message: " + data);
+                 fs.createWriteStream(Peer.myPeer().downloadingFiles[data.filename].downloadLocation).pipe(stream);
 
-                })
+                 //console.log("Received download end message: " + data);
+
+                 })
+                 */
 
             });
 
