@@ -230,9 +230,9 @@ angular.module('node-teiler', [
                     });
 
 
-                socketStream(peers[peer.name].socket).on('file.download.data', function(stream, data) {
+                socketStream(peers[peer.name].socket).on('file.download.data', function(stream) {
 
-                    console.log("Server Received download data message: " + data.filename);
+                    //console.log("Server Received download data message: " + data.filename);
 
                     fs.createWriteStream('/home/armin/Downloads/testfile').pipe(stream);
                     //fs.createWriteStream(Peer.myPeer().downloadingFiles[data.filename].downloadLocation).pipe(stream);
