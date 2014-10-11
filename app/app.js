@@ -193,26 +193,28 @@ angular.module('node-teiler', [
                 peers[peer.name].socket
 
                     /*
-                    .on('file.download.start', function(data) {
+                     .on('file.download.start', function(data) {
 
-                        console.log("Received download start message: " + data);
+                     console.log("Received download start message: " + data);
 
-                    })
-                    */
+                     })
+                     */
 
+                    /*
                     .on('file.download.data', function(data) {
 
                         console.log("Client Received download end message: " + data);
 
                     })
+                    */
 
                     /*
-                    .on('file.download.end', function(data) {
+                     .on('file.download.end', function(data) {
 
-                        console.log("Received download end message: " + data);
+                     console.log("Received download end message: " + data);
 
-                    })
-                    */
+                     })
+                     */
 
                     .on('filelist.update', function(data) {
                         peers[data.peername].availableFiles = data.filelist;
@@ -226,17 +228,16 @@ angular.module('node-teiler', [
 
                     });
 
-                /*
-                 socketStream(socket).on('file.download.data', function(stream, data) {
 
-                 console.log("Server Received download data message: " + data.filename);
+                socketStream(peers[peer.name].socket).on('file.download.data', function(stream, data) {
 
-                 fs.createWriteStream(Peer.myPeer().downloadingFiles[data.filename].downloadLocation).pipe(stream);
+                    console.log("Server Received download data message: " + data.filename);
 
-                 //console.log("Received download end message: " + data);
+                    fs.createWriteStream(Peer.myPeer().downloadingFiles[data.filename].downloadLocation).pipe(stream);
 
-                 })
-                 */
+                    //console.log("Received download end message: " + data);
+
+                });
 
                 peers[peer.name].files = [];
 
