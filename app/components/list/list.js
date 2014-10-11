@@ -17,18 +17,14 @@ angular.module('node-teiler.list', [])
         $scope.clickAddButton = function(clickEvent) {
 
             console.log("Clicked Send Button!");
-            //console.log(clickEvent);
 
-            //fileInputDialogListener.trigger('click');
             $('#fileInputDialog').trigger('click');
-			//console.log("Clicked on " + '#' + peer.name + 'fileInputDialog');
 
         };
 
         $scope.clickDownloadButton = function(clickEvent, peer, file) {
 
             console.log("Clicked Download Button for " + file.name);
-            //console.log(clickEvent);
 
             $('#' + peer.name + 'fileSaveDialog').trigger('click');
             console.log("Clicked on #" + peer.name + "fileSaveDialog");

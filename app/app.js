@@ -193,34 +193,12 @@ angular.module('node-teiler', [
 
                 peers[peer.name].socket
 
-                    /*
-                     .on('file.download.start', function(data) {
-
-                     console.log("Received download start message: " + data);
-
-                     })
-                     */
-
-                    /*
-                    .on('file.download.data', function(data) {
-
-                        console.log("Client Received download end message: " + data);
-
-                    })
-                    */
-
-                    /*
-                     .on('file.download.end', function(data) {
-
-                     console.log("Received download end message: " + data);
-
-                     })
-                     */
-
                     .on('filelist.update', function(data) {
+
                         peers[data.peername].availableFiles = data.filelist;
                         console.log("Client Received filelistupdate: " + data.peername + " " + data.filelist);
                         $rootScope.$broadcast('peerList.update');
+
                     })
 
                     .on('disconnect', function() {
@@ -234,10 +212,7 @@ angular.module('node-teiler', [
 
                     console.log("Server Received download data message: " + data.filename);
 
-                    //fs.createWriteStream('/home/armin/Downloads/testfile').pipe(stream);
                     fs.createWriteStream(Peer.myPeer().downloadingFiles[data.filename].downloadLocation).pipe(stream);
-
-                    //console.log("Received download end message: " + data);
 
                 });
 
