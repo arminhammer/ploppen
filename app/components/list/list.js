@@ -86,7 +86,7 @@ angular.module('node-teiler.list', [])
             };
 
             var socketStream = require('socket.io-stream');
-
+            var stream = socketStream.createStream();
             socketStream(peer.socket).emit('file.download.request', stream, { filename : file.filename, peername : Peer.myPeer().name });
 
         }
