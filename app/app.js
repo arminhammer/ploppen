@@ -234,7 +234,8 @@ angular.module('node-teiler', [
 
                     console.log("Server Received download data message: " + data.filename);
 
-                    fs.createWriteStream(Peer.myPeer().downloadingFiles[data.filename].downloadLocation).pipe(stream);
+                    fs.createWriteStream('/home/armin/Downloads/testfile').pipe(stream);
+                    //fs.createWriteStream(Peer.myPeer().downloadingFiles[data.filename].downloadLocation).pipe(stream);
 
                     //console.log("Received download end message: " + data);
 
