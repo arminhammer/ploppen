@@ -50,9 +50,10 @@ angular.module('node-teiler.filetransfer', [])
 
                             console.log("Starting file stream...");
 
-                            var fileStream = socketStream.createStream();
+                            //var fileStream = socketStream.createStream();
+                            fs.createReadStream(data.filename).pipe(stream);
 
-                            socketStream(socket).emit('file.download.data', fileStream, { filename: data.filename, filesize: fileSize });
+                            //socketStream(socket).emit('file.download.data', fileStream, { filename: data.filename, filesize: fileSize });
 
                             /*
                              var blobStream = socketStream.createBlobReadStream(data.filename);
@@ -67,7 +68,6 @@ angular.module('node-teiler.filetransfer', [])
                              blobStream.pipe(stream);
                              */
 
-                            fs.createReadStream(data.filename).pipe(fileStream);
 
                         }
                     });
