@@ -9,7 +9,7 @@ angular.module('node-teiler.peerdiscovery', [])
 
         var dgram = require('dgram');
         var server;
-		var bServer;
+		//var bServer;
 
         this.start = function(callback) {
 
@@ -56,7 +56,7 @@ angular.module('node-teiler.peerdiscovery', [])
 
             });
 
-
+            /*
 			bServer = dgram.createSocket('udp4');
 
 			bServer.bind(Config.multicastPort(), function() {
@@ -99,7 +99,7 @@ angular.module('node-teiler.peerdiscovery', [])
 				}
 
 			});
-
+            */
 
             callback();
 
@@ -110,7 +110,7 @@ angular.module('node-teiler.peerdiscovery', [])
             server.dropMembership(Config.multicastAddress());
             server.close();
 
-			bServer.close();
+			//bServer.close();
 
             callback();
 
