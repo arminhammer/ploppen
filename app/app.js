@@ -100,6 +100,7 @@ angular.module('node-teiler', [
 
         var ioc = require('socket.io-client');
         var socketStream = require('socket.io-stream');
+        var fs = require('fs');
 
         var peers = {};
 
