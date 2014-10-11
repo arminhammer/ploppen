@@ -68,6 +68,8 @@ angular.module('node-teiler.list', [])
 				};
 
 				$scope.$apply();
+                FileTransferServer.updateFileList();
+
 			}
 
 			console.log(Peer.myPeer().availableFiles);

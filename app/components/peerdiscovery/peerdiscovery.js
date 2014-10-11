@@ -33,7 +33,7 @@ angular.module('node-teiler.peerdiscovery', [])
 
             server.on('message', function (messageJSON, remote) {
 
-                console.log("MULTI MESSAGE: " + remote.address + ':' + remote.port +' - ' + messageJSON);
+                //console.log("MULTI MESSAGE: " + remote.address + ':' + remote.port +' - ' + messageJSON);
 
                 if(Peer.localAddr().indexOf(remote.address) < 0) {
 
@@ -139,14 +139,14 @@ angular.module('node-teiler.peerdiscovery', [])
 
             var client = dgram.createSocket('udp4');
 			var localAddress = Peer.ipAddress();
-			console.log(localAddress);
+			//console.log(localAddress);
 			client.bind(localAddress);
 			client.on("listening", function () {
 				client.setBroadcast(true);
 				client.send(messageJSON, 0, messageJSON.length, Config.multicastPort(), address, function (err, bytes) {
 
 					if (err) throw err;
-					console.log("UDP message: " + messageJSON + " sent to " + address + ":" + Config.multicastPort());
+					//console.log("UDP message: " + messageJSON + " sent to " + address + ":" + Config.multicastPort());
 					client.close();
 
 				})

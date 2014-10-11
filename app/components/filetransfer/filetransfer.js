@@ -8,11 +8,14 @@ angular.module('node-teiler.filetransfer', [])
     .service('FileTransferServer', ['$rootScope', 'Config', 'PeerList', 'Peer', function($rootScope, Config, PeerList, Peer) {
 
         var fs = require('fs');
+        var server;
+        var socket;
 
         this.start = function(callback) {
 
-            var server = require('http').createServer();
-            var socket = require('socket.io')(server);
+            server = require('http').createServer();
+            socket = require('socket.io')(server);
+
             server.listen(Config.fileTransferPort());
 
             socket.on('connection', function (socket) {
@@ -92,6 +95,10 @@ angular.module('node-teiler.filetransfer', [])
 
                     })
 
+                    .on('filelist.update', function(data) {
+                        PeerList.list()[data.peername].files = data.filelist;
+                    })
+
                     .on('disconnect', function () {
 
                         socket.emit('user disconnected');
@@ -102,6 +109,10 @@ angular.module('node-teiler.filetransfer', [])
 
             callback();
 
+        };
+
+        this.updateFileList = function() {
+            socket.emit('filelist.update', { peername : Peer.myPeer().name, filelist: Peer.myPeer().availableFiles });
         };
 
     }]);
