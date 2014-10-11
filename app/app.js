@@ -96,7 +96,7 @@ angular.module('node-teiler', [
 
     }])
 
-    .service('PeerList', ['$rootScope', function($rootScope) {
+    .service('PeerList', ['$rootScope', 'Peer', function($rootScope, Peer) {
 
         var ioc = require('socket.io-client');
         var socketStream = require('socket.io-stream');
