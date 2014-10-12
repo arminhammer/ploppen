@@ -1,4 +1,5 @@
 module.exports = function(config){
+
     config.set({
 
         basePath : './',
@@ -9,30 +10,31 @@ module.exports = function(config){
             'app/bower_components/angular-mocks/angular-mocks.js',
             'app/*.js',
             'app/components/**/*.js',
+            'test/**/*.js'
         ],
 
         autoWatch : true,
 
         frameworks: ['jasmine'],
 
-        browsers : ['Chrome'],
+        browsers : ['Chrome', 'NodeWebkit'],
 
         plugins : [
             'karma-chrome-launcher',
             'karma-firefox-launcher',
             'karma-jasmine',
             'karma-junit-reporter',
-            'karma-coverage'
+            'karma-coverage',
+            'karma-nodewebkit-launcher'
         ],
 
-        // coverage reporter generates the coverage
         reporters: ['progress', 'coverage'],
 
         preprocessors: {
-            'app/**/*.js': ['coverage']
+            'app/*.js': ['coverage'],
+            'app/components/**/*.js': ['coverage']
         },
 
-        // optionally, configure the reporter
         coverageReporter: {
             type : 'html',
             dir : 'coverage/'
