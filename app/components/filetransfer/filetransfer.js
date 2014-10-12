@@ -3,7 +3,10 @@
  */
 'use strict';
 
-// Declare app level module which depends on views, and components
+/**
+ * Module that handles file transfers
+ * TODO: Add unit testing, currently not possible without being able to inject external dependencies
+ */
 angular.module('ploppen.filetransfer', [])
     .service('FileTransferServer', ['$rootScope', 'Config', 'PeerList', 'Peer', function($rootScope, Config, PeerList, Peer) {
 
@@ -12,6 +15,10 @@ angular.module('ploppen.filetransfer', [])
         var io;
         var socketStream;
 
+        /**
+         * Starts the file transfer server
+         * @param callback
+         */
         this.start = function(callback) {
 
             server = require('http').createServer();
@@ -20,9 +27,11 @@ angular.module('ploppen.filetransfer', [])
             server.listen(Config.fileTransferPort());
             socketStream = require('socket.io-stream');
 
+            // When a peer connects, establish the socket rules
             io.on('connection', function (socket) {
 
                 socket
+                    // Obsolete, should eliminate
                     .on('file.download.offer', function(data) {
 
                         console.log("File offered: " + data.filename);
@@ -32,12 +41,17 @@ angular.module('ploppen.filetransfer', [])
 
                     })
 
+                    // What to do when peer disconnects.
+                    // TODO: Add peer disconnect handling.
                     .on('disconnect', function () {
 
                         socket.emit('user disconnected');
 
                     });
 
+                /**
+                 * Handle a request from a peer to download a file
+                 */
                 socketStream(socket).on('file.download.request', function(stream, data) {
 
                     fs.stat(data.filename, function(err, stats) {
@@ -81,6 +95,10 @@ angular.module('ploppen.filetransfer', [])
 
         };
 
+        /**
+         * When a file is added to the local available files, alert the other peers that there is an
+         * updated file list
+         */
         this.updateFileList = function() {
 
             io.emit('filelist.update', { peername : Peer.myPeer().name, filelist: Peer.myPeer().availableFiles });

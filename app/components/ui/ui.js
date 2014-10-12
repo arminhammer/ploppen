@@ -1,19 +1,28 @@
 'use strict';
 
+/**
+ * Module that handles the app UI
+ */
 angular.module('ploppen.ui', [])
 
-    .controller('UIController', ['$scope', 'PeerList', 'Peer', 'PeerDiscoveryBroadcaster', 'PeerDiscoveryListener', 'FileTransferServer', function($scope, PeerList, Peer, PeerDiscoveryBroadcaster, PeerDiscoveryListener, FileTransferServer) {
+    .controller('UIController', ['$scope', 'PeerList', 'Peer', 'Init', function($scope, PeerList, Peer) {
 
+        // The local peer state object
         $scope.myPeer = Peer.myPeer();
 
+        // The peer list state object
         $scope.peers = PeerList.list();
 
+        // In case the peer list is updated elsewhere in the application, make sure the UI is updated
         $scope.$on('peerList.update', function() {
 
             $scope.$apply();
 
         });
 
+        /**
+         * When the button is clicked, open the file dialog to choose a file
+         */
         $scope.clickAddButton = function() {
 
             console.log("Clicked Send Button!");
@@ -22,6 +31,12 @@ angular.module('ploppen.ui', [])
 
         };
 
+        /**
+         * When the download button is clicked, choose the download location
+         * @param clickEvent
+         * @param peer
+         * @param file
+         */
         $scope.clickDownloadButton = function(clickEvent, peer, file) {
 
             console.log("Clicked Download Button for " + file.name);
@@ -30,47 +45,37 @@ angular.module('ploppen.ui', [])
             console.log("Clicked on #" + peer.name + "fileSaveDialog");
         };
 
-        PeerDiscoveryListener.start(function() {
-
-            console.log("Started Peer Discovery Listener");
-
-        });
-
-        PeerDiscoveryBroadcaster.start(function() {
-
-            console.log("Started Peer Discovery Broadcaster");
-
-        });
-
-        FileTransferServer.start(function() {
-
-            console.log("Started File Transfer Server");
-
-        });
-
+        /**
+         * Add a file to the local peer availableFiles list
+         */
         $scope.addFile = function() {
 
-			var filename = $("#fileInputDialog").val();
-			console.log("FILENAME VALUE IS " + filename);
+            var filename = $("#fileInputDialog").val();
+            console.log("FILENAME VALUE IS " + filename);
 
-			console.log(Peer.myPeer().availableFiles);
+            console.log(Peer.myPeer().availableFiles);
 
-			if(Peer.myPeer().availableFiles[filename] == null) {
+            if(Peer.myPeer().availableFiles[filename] == null) {
 
-				Peer.myPeer().availableFiles[filename] = {
+                Peer.myPeer().availableFiles[filename] = {
 
-					filename: filename
+                    filename: filename
 
-				};
+                };
 
-				$scope.$apply();
+                $scope.$apply();
                 FileTransferServer.updateFileList();
 
-			}
+            }
 
-			console.log(Peer.myPeer().availableFiles);
+            console.log(Peer.myPeer().availableFiles);
         };
 
+        /**
+         * Download a file from another peer in the network
+         * @param peer
+         * @param file
+         */
         $scope.downloadFile  = function(peer, file) {
 
             console.log("DOWNLOADING FROM " + peer.name);
@@ -94,6 +99,9 @@ angular.module('ploppen.ui', [])
         }
 
     }])
+/**
+ * Directive to help the file input dialog and save file dialog process
+ */
     .directive('onChange', function() {
 
         return {
@@ -103,9 +111,9 @@ angular.module('ploppen.ui', [])
 
             link: function(scope, elm) {
 
-				elm.bind('change', function() {
+                elm.bind('change', function() {
 
-					scope.onChange();
+                    scope.onChange();
 
                 });
             }

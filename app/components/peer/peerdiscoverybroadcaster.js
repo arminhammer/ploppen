@@ -3,12 +3,18 @@
  */
 'use strict';
 
-// Declare app level module which depends on views, and components
+/**
+ * This module broadcasts UDP multicast and IP Broadcast messages
+ */
 angular.module('ploppen.peer.discovery.broadcaster', [])
     .service('PeerDiscoveryBroadcaster', ['Peer', 'Config', function(Peer, Config) {
 
         var dgram = require('dgram');
 
+        /**
+         * Generate the JSON message to be sent
+         * @returns {Buffer}
+         */
         function genMessage() {
             var body = {
                 timestamp: Date.now(),
@@ -21,6 +27,10 @@ angular.module('ploppen.peer.discovery.broadcaster', [])
             return new Buffer(JSON.stringify(body));
         }
 
+        /**
+         * Broadcast the message on the given address
+         * @param address
+         */
         function broadCastMessage(address) {
 
             var messageJSON = genMessage();
@@ -42,6 +52,11 @@ angular.module('ploppen.peer.discovery.broadcaster', [])
 
         }
 
+        /**
+         * Start the broadcast service.  Repeat on specified intervals
+         * TODO: Move the interval parameter to Config
+         * @param callback
+         */
         this.start = function(callback) {
 
             setInterval(function(){broadCastMessage(Config.multicastAddress())}, 5000);

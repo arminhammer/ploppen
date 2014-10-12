@@ -51,7 +51,31 @@ angular.module('ploppen', [
          */
         this.fileTransferPort = function() {
             return fileTransferPort;
-        }
+        };
+
+    }])
+/**
+ * The Init service initializes the network services
+ */
+    .service('Init', ['PeerDiscoveryBroadcaster', 'PeerDiscoveryListener', 'FileTransferServer', function(PeerDiscoveryBroadcaster, PeerDiscoveryListener, FileTransferServer) {
+
+        PeerDiscoveryListener.start(function() {
+
+            console.log("Started Peer Discovery Listener");
+
+        });
+
+        PeerDiscoveryBroadcaster.start(function() {
+
+            console.log("Started Peer Discovery Broadcaster");
+
+        });
+
+        FileTransferServer.start(function() {
+
+            console.log("Started File Transfer Server");
+
+        });
 
     }]);
 

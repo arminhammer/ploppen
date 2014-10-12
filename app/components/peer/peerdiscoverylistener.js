@@ -3,7 +3,9 @@
  */
 'use strict';
 
-// Declare app level module which depends on views, and components
+/**
+ * Module to listen for incoming UDP or IP Broadcast discovery messages from other peers
+ */
 angular.module('ploppen.peer.discovery.listener', [])
     .service('PeerDiscoveryListener', ['$rootScope', 'Peer', 'Config', 'PeerList', function($rootScope, Peer, Config, PeerList) {
 
@@ -11,10 +13,17 @@ angular.module('ploppen.peer.discovery.listener', [])
         var server;
 		//var bServer;
 
+        /**
+         * Start the service
+         * @param callback
+         */
         this.start = function(callback) {
 
             server = dgram.createSocket('udp4');
 
+            /**
+             * Bind to the multicast port
+             */
             server.bind(Config.multicastPort(), function() {
 
                 server.addMembership(Config.multicastAddress());
@@ -31,6 +40,9 @@ angular.module('ploppen.peer.discovery.listener', [])
 
             });
 
+            /**
+             * If a message is received, see if the peer should be added to the peer list
+             */
             server.on('message', function (messageJSON, remote) {
 
                 //console.log("MULTI MESSAGE: " + remote.address + ':' + remote.port +' - ' + messageJSON);
@@ -60,6 +72,10 @@ angular.module('ploppen.peer.discovery.listener', [])
 
         };
 
+        /**
+         * Stop the multicast listener service
+         * @param callback
+         */
         this.stop = function(callback) {
 
             server.dropMembership(Config.multicastAddress());
