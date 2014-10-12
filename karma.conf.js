@@ -1,33 +1,47 @@
 module.exports = function(config){
-  config.set({
+    config.set({
 
-    basePath : './',
+        basePath : './',
 
-    files : [
-      'app/bower_components/angular/angular.js',
-      'app/bower_components/angular-route/angular-route.js',
-      'app/bower_components/angular-mocks/angular-mocks.js',
-      'app/*.js',
-      'app/components/**/*.js',
-    ],
+        files : [
+            'app/bower_components/angular/angular.js',
+            'app/bower_components/angular-route/angular-route.js',
+            'app/bower_components/angular-mocks/angular-mocks.js',
+            'app/*.js',
+            'app/components/**/*.js',
+        ],
 
-    autoWatch : true,
+        autoWatch : true,
 
-    frameworks: ['jasmine'],
+        frameworks: ['jasmine'],
 
-    browsers : ['Chrome'],
+        browsers : ['Chrome'],
 
-    plugins : [
+        plugins : [
             'karma-chrome-launcher',
             'karma-firefox-launcher',
             'karma-jasmine',
-            'karma-junit-reporter'
-            ],
+            'karma-junit-reporter',
+            'karma-coverage'
+        ],
 
-    junitReporter : {
-      outputFile: 'test_out/unit.xml',
-      suite: 'unit'
-    }
+        // coverage reporter generates the coverage
+        reporters: ['progress', 'coverage'],
 
-  });
+        preprocessors: {
+            'app/**/*.js': ['coverage']
+        },
+
+        // optionally, configure the reporter
+        coverageReporter: {
+            type : 'html',
+            dir : 'coverage/'
+        },
+
+        junitReporter : {
+            outputFile: 'test_out/unit.xml',
+            suite: 'unit'
+        }
+
+    });
 };
