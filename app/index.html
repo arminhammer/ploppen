@@ -39,7 +39,7 @@
 
 <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
 <div class="content">
-    <div ng-controller="ListController">
+    <div ng-controller="UIController">
         <div class="content-padded">
             <form>
                 <input class="textInput" type="text" ng-model="myPeer.name" ng-model-options="{ updateOn: 'blur' }" placeholder="My Computer">
@@ -59,7 +59,7 @@
             </ul>
         </div>
         <div class="content-padded">
-            <h3">Peers</h3>
+            <h3>Peers</h3>
         </div>
         <div class="card" ng-repeat="peer in peers">
             <ul class="table-view">
@@ -67,13 +67,15 @@
                     <strong>{{ peer.name }}</strong>
 
                 </li>
-                <ul class="table-view">
-                    <li ng-repeat="file in peer.availableFiles" class="table-view-cell">
-                        <input style="display:none;" id="{{ peer.name }}fileSaveDialog" type="file" nwsaveas="{{ file.filename }}" on-change="downloadFile(peer, file)" />
-                        {{ file.filename }}
-                        <button class="btn btn-positive" ng-click="clickDownloadButton($event, peer, file)" >Download File</button>
-                    </li>
-                </ul>
+                <li class="table-view-cell">
+                    <ul class="table-view">
+                        <li ng-repeat="file in peer.availableFiles" class="table-view-cell">
+                            <input style="display:none;" id="{{ peer.name }}fileSaveDialog" type="file" nwsaveas="{{ file.filename }}" on-change="downloadFile(peer, file)" />
+                            {{ file.filename }}
+                            <button class="btn btn-positive" ng-click="clickDownloadButton($event, peer, file)" >Download File</button>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
@@ -82,9 +84,12 @@
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/ratchet/dist/js/ratchet.js"></script>
-<script src="app.js"></script>
-<script src="components/list/list.js"></script>
-<script src="components/peerdiscovery/peerdiscovery.js"></script>
+<script src="ploppen.js"></script>
+<script src="components/ui/ui.js"></script>
+<script src="components/peer/peer.js"></script>
+<script src="components/peer/peerlist.js"></script>
+<script src="components/peer/peerdiscoverylistener.js"></script>
+<script src="components/peer/peerdiscoverybroadcaster.js"></script>
 <script src="components/filetransfer/filetransfer.js"></script>
 <!-- endbuild -->
 </body>

@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('ploppen.list', [])
+angular.module('ploppen.ui', [])
 
-    .controller('ListController', ['$scope', 'PeerList', 'Peer', 'PeerDiscoveryBroadcaster', 'PeerDiscoveryListener', 'FileTransferServer', function($scope, PeerList, Peer, PeerDiscoveryBroadcaster, PeerDiscoveryListener, FileTransferServer) {
+    .controller('UIController', ['$scope', 'PeerList', 'Peer', 'PeerDiscoveryBroadcaster', 'PeerDiscoveryListener', 'FileTransferServer', function($scope, PeerList, Peer, PeerDiscoveryBroadcaster, PeerDiscoveryListener, FileTransferServer) {
 
         $scope.myPeer = Peer.myPeer();
 
@@ -14,7 +14,7 @@ angular.module('ploppen.list', [])
 
         });
 
-        $scope.clickAddButton = function(clickEvent) {
+        $scope.clickAddButton = function() {
 
             console.log("Clicked Send Button!");
 
