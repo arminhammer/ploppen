@@ -1,35 +1,59 @@
 'use strict';
 
-// Declare app level module which depends on views, and components
+/**
+ * The ploppen.peer.peer module provides the Peer service, which maintains the state of the local Peer
+ */
 angular.module('ploppen.peer.peer', [])
     .service('Peer', ['Config', function(Config) {
 
         var os = require('os');
         var dns = require('dns');
 
+        /**
+         * The interior object that holds Peer state variables
+         * @type {{name: *, address: *, port: *, downloadingFiles: {}, availableFiles: {}}}
+         */
         var myPeer = {
 
+            // Local machine hostname
             name: os.hostname(),
+            // Local machine network ip address
             address: getIPAddress(),
+            // The local machine file transfer port
             port: Config.fileTransferPort(),
+            // The object list maintaining files currently downloading.  Obsolete?
             downloadingFiles: {},
+            // List of currently available files for download
             availableFiles: {}
 
         };
 
-        function getLocalAddr() {
+        /**
+         * Return the interior state object
+         * @returns {{name: *, address: *, port: *, downloadingFiles: {}, availableFiles: {}}}
+         */
+        this.myPeer = function() {
+
+            return myPeer;
+
+        };
+
+        /**
+         * Returns an array of currently available local ip addresses on the machine, including 127.0.0.1
+         * @returns {Array}
+         */
+        function getLocalAddresses() {
 
             var ifaces = os.networkInterfaces();
             var iList = [];
 
             for (var dev in ifaces) {
-                //console.log("IFACE: " + ifaces[dev]);
+
                 var alias = 0;
                 ifaces[dev].forEach(function (details) {
 
                     if (details.family == 'IPv4') {
 
-                        //console.log("DEETS: " + dev + (alias ? ':' + alias : ''), details.address);
                         iList.push(details.address);
                         ++alias;
 
@@ -39,42 +63,55 @@ angular.module('ploppen.peer.peer', [])
 
             }
 
-            //console.log("iList: " + iList);
             return iList;
 
         }
 
-        this.localAddr = function() {
-            return getLocalAddr();
+        /**
+         * Returns array of local ip addresses
+         * @returns {Array}
+         */
+        this.localAddressList = function() {
+
+            return getLocalAddresses();
+
         };
 
+        /**
+         * Returns the first machine network ip address
+         * @returns {*}
+         */
         this.ipAddress = function() {
+
             return getIPAddress();
+
         };
 
-        this.broadcastAddr = function() {
+        /**
+         * Returns the broadcast IP address to use for IP Broadcasting.  For use with networks where
+         * UDP multicasting is not working
+         * @returns {string}
+         */
+        this.broadcastAddress = function() {
+
             var lAddr = getIPAddress();
             return lAddr.substr(0, lAddr.indexOf('.')) + '.255.255.255';
-        };
-
-        this.myPeer = function() {
-
-            return myPeer;
 
         };
 
+        /**
+         * Get the first network ip address for the machines
+         * @returns {*}
+         */
         function getIPAddress() {
 
-            var ifaces = getLocalAddr();
+            var ifaces = getLocalAddresses();
             var count = 0;
 
             while(count < ifaces.length) {
 
-                //console.log("NEXT IF: " + ifaces[count]);
-
                 if(!(ifaces[count] == "127.0.0.1")) {
 
-                    //console.log("INTERFACE: " + ifaces[count]);
                     return ifaces[count];
 
                 } else {
@@ -84,9 +121,6 @@ angular.module('ploppen.peer.peer', [])
                 }
             }
 
-            //console.log("INTERFACE: " + ifaces[0]);
-
-            return ifaces[0];
         }
 
     }]);

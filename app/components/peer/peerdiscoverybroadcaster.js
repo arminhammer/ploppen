@@ -46,7 +46,7 @@ angular.module('ploppen.peer.discovery.broadcaster', [])
 
             setInterval(function(){broadCastMessage(Config.multicastAddress())}, 5000);
 
-            setInterval(function(){broadCastMessage(Peer.broadcastAddr())}, 6000);
+            setInterval(function(){broadCastMessage(Peer.broadcastAddress())}, 6000);
 
             callback();
 

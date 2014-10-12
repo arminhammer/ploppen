@@ -35,7 +35,7 @@ angular.module('ploppen.peer.discovery.listener', [])
 
                 //console.log("MULTI MESSAGE: " + remote.address + ':' + remote.port +' - ' + messageJSON);
 
-                if(Peer.localAddr().indexOf(remote.address) < 0) {
+                if(Peer.localAddressList().indexOf(remote.address) < 0) {
 
                     var message = JSON.parse(messageJSON);
                     var peer = message.peer;

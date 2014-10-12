@@ -21,7 +21,7 @@ angular.module('ploppen', [
 
 ])
 /**
- * The Config maintains the state of some important application state variables.
+ * The Config service maintains the state of some important application state variables.
  */
     .service('Config', [function() {
 
