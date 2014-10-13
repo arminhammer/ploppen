@@ -124,6 +124,7 @@ module.exports = function (grunt) {
                     src: [
                         '.tmp',
                         '<%= myApp.dist %>/*',
+                        'nwbuilds/**/*',
                         '!<%= myApp.dist %>/.git*'
                     ]
                 }]
@@ -236,10 +237,10 @@ module.exports = function (grunt) {
 
         nodewebkit: {
             options: {
-                platforms: ['win','osx', 'linux'],
-                buildDir: './nwbuilds', // Where the build version of my node-webkit app is saved
+                platforms: ['win','osx', 'linux64'],
+                buildDir: './nwbuilds' // Where the build version of my node-webkit app is saved
             },
-            src: ['./app/**/*'] // Your node-webkit app
+            src: ['./dist/**/*', './node_modules/socket.io*/**/*'] // Your node-webkit app
         },
 
         copy: {
@@ -256,7 +257,8 @@ module.exports = function (grunt) {
                         'partials/{,*/}*.html',
                         'bower_components/**/*',
                         'img/{,*/}*.{webp}',
-                        'fonts/*'
+                        'fonts/*',
+                        'package.json'
                     ]
                 }, {
                     expand: true,
@@ -270,6 +272,12 @@ module.exports = function (grunt) {
                 cwd: '<%= myApp.app %>/css',
                 dest: '.tmp/css/',
                 src: '{,*/}*.css'
+            },
+            modules: {
+                expand: true,
+                cwd: '<%= myApp %>/node_modules',
+                dest: '<%= myApp.dist %>/node_modules',
+                src: 'socket.io/**/*'
             }
         },
 
@@ -364,12 +372,14 @@ module.exports = function (grunt) {
         'concat',
         'ngmin',
         'copy:dist',
+        'copy:modules',
         'cdnify',
         'cssmin',
         'uglify',
         'rev',
         'usemin',
-        'htmlmin'
+        'htmlmin',
+        'nodewebkit'
     ]);
 
     grunt.registerTask('default', [

@@ -1,0 +1,23 @@
+{
+    "main": "index.html",
+    "name": "ploppen",
+    "description": "ploppen",
+    "version": "0.0.1",
+    "keywords": [ "ploppen"],
+    "window": {
+        "title": "ploppen",
+        "icon": "link.png",
+        "toolbar": true,
+        "frame": true,
+        "width": 400,
+        "height": 700,
+        "position": "center"
+    },
+    "webkit": {
+        "plugin": true
+    },
+    "dependencies": {
+        "deck":"latest",
+        "socket.io": "~1.1.0"
+    }
+}
